@@ -1,10 +1,10 @@
-import ModeToggle from '@/components/theme/mode-toggle'
+import { Header } from '@/components/header/header'
 
 export function Schedule() {
   return (
     <>
+      <Header />
       <h1>Schedule</h1>
-      <ModeToggle />
     </>
   )
 }
