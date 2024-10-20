@@ -35,12 +35,12 @@ export function ScheduleCard({
   const [date, setDate] = useState<Date | undefined>()
 
   return (
-    <div className="bg-zinc-900 space-y-6 p-10 rounded-lg">
+    <div className="bg-zinc-100 dark:bg-zinc-900 space-y-6 w-89 sm:w-96 p-10 rounded-lg">
       <div className="space-y-2">
         <h2 className="font-bold text-lg">
           {discpline} | {type}
         </h2>
-        <p className="text-zinc-200">
+        <p className="text-zinc-800 dark:text-zinc-200">
           Selecione data e horário para agendar sua avaliação:
         </p>
       </div>
@@ -54,7 +54,7 @@ export function ScheduleCard({
                 variant="outline"
                 className="flex justify-between p-3 items-center w-full"
               >
-                <span className="text-zinc-300 text-sm font-semibold">
+                <span className="text-zinc-500 dark:text-zinc-400 text-sm font-semibold">
                   {!date && 'Selecione a data da sua avaliação'}
                   {date && dayjs(date).format('DD [de] MMMM [de] YYYY')}
                 </span>
@@ -77,7 +77,7 @@ export function ScheduleCard({
         <div className="space-y-2">
           <Label className="text-sm">Horário</Label>
           <Select>
-            <SelectTrigger className="text-zinc-300 text-sm font-semibold hover:bg-accent">
+            <SelectTrigger className="text-zinc-500 dark:text-zinc-400 text-sm font-semibold hover:bg-accent">
               <SelectValue placeholder="Selecione o horário da sua avaliação" />
             </SelectTrigger>
             <SelectContent>

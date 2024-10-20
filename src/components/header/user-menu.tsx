@@ -38,7 +38,7 @@ export function UserMenu() {
 
       <Button
         variant="ghost"
-        className="w-full gap-2 flex justify-start items-center p-2 text-red-500 hover:text-red-300"
+        className="w-full gap-2 flex justify-start items-center p-2 text-red-500 hover:text-red-800 dark:hover:text-red-300"
       >
         <LucideLogOut className="size-4 " />
         <span className="font-medium">Sair</span>

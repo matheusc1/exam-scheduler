@@ -4,7 +4,13 @@ export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
-      width: { button: '168px' },
+      width: {
+        button: '168px',
+        89: '356px',
+      },
+      maxWidth: {
+        app: '808px',
+      },
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
