@@ -41,7 +41,7 @@ export function Schedule() {
   return (
     <>
       <Header />
-      <div className="my-10 flex flex-col sm:flex-row gap-10 items-start justify-center">
+      <div className="my-10 flex flex-col sm:flex-row gap-10 items-center sm:items-start">
         <ScheduleCard
           discpline={mandatoryExam.discpline}
           type={mandatoryExam.type}
