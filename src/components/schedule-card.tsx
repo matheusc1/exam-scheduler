@@ -15,6 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from './ui/select'
+import { formatDate } from '@/utils/formatDate'
 
 dayjs.locale('pt-br')
 
@@ -51,13 +52,7 @@ export function ScheduleCard({
     setSelectedHour(value)
   }
 
-  const selectedDate = dayjs(date)
-    .set('hour', Number(selectedHour.split(':')[0]))
-    .set('minute', Number(selectedHour.split(':')[1]))
-  const finalHour = selectedDate.add(1, 'hour')
-  const formattedDate = selectedDate.format(
-    `DD/MM [de] HH:mm [até] ${finalHour.format('HH:mm')}`
-  )
+  const selectedDate = date && formatDate(date, selectedHour)
 
   return (
     <div className="bg-zinc-100 dark:bg-zinc-900 space-y-6 w-89 sm:w-96 p-10 rounded-lg">
@@ -74,7 +69,7 @@ export function ScheduleCard({
           <p className="text-zinc-800 dark:text-zinc-200 text-sm">
             Sua avaliação <span className="font-bold">{type}</span> está
             agendada para o dia{' '}
-            <span className="font-bold">{formattedDate}.</span>
+            <span className="font-bold">{selectedDate}.</span>
           </p>
         )}
       </div>
