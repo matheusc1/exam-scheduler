@@ -5,10 +5,12 @@ import { Schedule } from '../pages/schedule'
 import { Support } from '../pages/support'
 import { Profile } from '../pages/profile'
 import { SignIn } from '../pages/sign-in'
+import { Layout } from '@/pages/_layout'
 
 export const router = createBrowserRouter([
   {
     path: '/',
+    element: <Layout />,
     errorElement: <ErrorPage />,
     children: [
       { path: '/', element: <Schedule /> },

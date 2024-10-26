@@ -1,12 +1,9 @@
-import { Header } from '@/components/header/header'
 import logo from '@/assets/unifaa-logo.png'
 import { LucideMail, LucideMapPinned, LucidePhone } from 'lucide-react'
 
 export function Support() {
   return (
     <>
-      <Header />
-
       <div className="m-10 space-y-10 flex flex-col items-center justify-center">
         <div className="flex flex-col gap-5 items-center justify-center">
           <img src={logo} className="w-12 h-20" alt="unifaa logo" />

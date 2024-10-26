@@ -7,10 +7,8 @@ import { Toaster } from './components/ui/toaster'
 export function App() {
   return (
     <ThemeProvider>
-      <div className="max-w-app mx-auto antialiased px-2 sm:px-0">
-        <Toaster />
-        <RouterProvider router={router} />
-      </div>
+      <Toaster />
+      <RouterProvider router={router} />
     </ThemeProvider>
   )
 }
