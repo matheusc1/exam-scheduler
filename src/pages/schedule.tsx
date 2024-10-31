@@ -1,4 +1,3 @@
-import { Header } from '@/components/header/header'
 import { ScheduleCard } from '@/components/schedule-card'
 
 const mandatoryExam = {
