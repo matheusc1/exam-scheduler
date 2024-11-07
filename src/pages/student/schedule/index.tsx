@@ -1,4 +1,4 @@
-import { ScheduleCard } from '@/components/schedule-card'
+import { ScheduleCard } from './schedule-card'
 
 const mandatoryExam = {
   discpline: 'IA - Machine Learning',

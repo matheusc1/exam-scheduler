@@ -1,8 +1,12 @@
 import { LucideChevronDown } from 'lucide-react'
-import { Button } from './ui/button'
-import { Label } from './ui/label'
-import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
-import { Calendar } from './ui/calendar'
+import { Button } from '../../../components/ui/button'
+import { Label } from '../../../components/ui/label'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '../../../components/ui/popover'
+import { Calendar } from '../../../components/ui/calendar'
 import { useState } from 'react'
 import dayjs from 'dayjs'
 import 'dayjs/locale/pt-br'
@@ -14,7 +18,7 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from './ui/select'
+} from '../../../components/ui/select'
 import { formatDate } from '@/utils/formatDate'
 
 dayjs.locale('pt-br')

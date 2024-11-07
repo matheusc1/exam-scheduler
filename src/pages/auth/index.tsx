@@ -18,8 +18,8 @@ export function SignIn() {
             <Label>Usuário</Label>
             <Input
               className="w-full"
-              type="text"
-              placeholder="Informe seu RA, E-mail ou CPF"
+              type="email"
+              placeholder="Informe seu e-mail"
             />
           </div>
 
