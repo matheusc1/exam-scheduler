@@ -10,32 +10,9 @@ import { NavBar } from './nav-bar'
 import { MobileNavBar } from './mobile-nav-bar'
 import { UserMenu } from './user-menu'
 import { useAuth } from '@/context/authContext'
-import { api } from '@/lib/axios'
-import { useEffect, useState } from 'react'
-import type { StudentType } from '../../profile'
 
 export function Header() {
-  const [student, setStudent] = useState<StudentType>()
-  const { userId } = useAuth()
-
-  useEffect(() => {
-    async function getStudent() {
-      if (userId) {
-        const { data } = await api.get(`/students/${userId}`)
-
-        setStudent({
-          id: data.id,
-          ra: data.ra,
-          name: data.name,
-          email: data.email,
-          birthDate: data.birthDate,
-          supportCenter: data.supportCenter,
-        })
-      }
-    }
-
-    getStudent()
-  }, [userId])
+  const { student } = useAuth()
 
   return (
     <Popover>

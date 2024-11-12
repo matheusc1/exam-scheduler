@@ -3,41 +3,10 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useAuth } from '@/context/authContext'
-import { api } from '@/lib/axios'
 import { LucideLock } from 'lucide-react'
-import { useState, useEffect } from 'react'
-
-export interface StudentType {
-  id: string
-  ra: string
-  name: string
-  email: string
-  birthDate: string
-  supportCenter: string
-}
 
 export function Profile() {
-  const [student, setStudent] = useState<StudentType>()
-  const { userId } = useAuth()
-
-  useEffect(() => {
-    async function getStudent() {
-      if (userId) {
-        const { data } = await api.get(`/students/${userId}`)
-
-        setStudent({
-          id: data.id,
-          ra: data.ra,
-          name: data.name,
-          email: data.email,
-          birthDate: data.birthDate,
-          supportCenter: data.supportCenter,
-        })
-      }
-    }
-
-    getStudent()
-  }, [userId])
+  const { student } = useAuth()
 
   return (
     <div className="my-10 flex flex-col sm:flex-row gap-10 items-center sm:items-start">

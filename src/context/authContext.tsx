@@ -9,7 +9,17 @@ import {
 
 type UserRole = 'admin' | 'coordinator' | 'student' | null
 
+export interface StudentType {
+  id: string
+  ra: string
+  name: string
+  email: string
+  birthDate: string
+  supportCenter: string
+}
+
 interface AuthContextType {
+  student: StudentType
   role: UserRole
   userId: string
   isAuthenticated: boolean
@@ -21,6 +31,14 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const [student, setStudent] = useState<StudentType>({
+    id: '',
+    ra: '',
+    name: '',
+    email: '',
+    birthDate: '',
+    supportCenter: '',
+  })
   const [role, setRole] = useState<UserRole>(null)
   const [userId, setUserId] = useState('')
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -45,6 +63,26 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     verifyToken()
   }, [])
 
+  useEffect(() => {
+    async function getStudent() {
+      if (userId) {
+        const { data } = await api.get(`/students/${userId}`)
+        setStudent({
+          id: data.id,
+          ra: data.ra,
+          name: data.name,
+          email: data.email,
+          birthDate: data.birthDate,
+          supportCenter: data.supportCenter,
+        })
+      }
+    }
+
+    if (userId) {
+      getStudent()
+    }
+  }, [userId])
+
   const login = (role: UserRole, id: string) => {
     setRole(role)
     setUserId(id)
@@ -61,7 +99,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <AuthContext.Provider
-      value={{ role, userId, isAuthenticated, isLoading, login, logout }}
+      value={{
+        student,
+        role,
+        userId,
+        isAuthenticated,
+        isLoading,
+        login,
+        logout,
+      }}
     >
       {children}
     </AuthContext.Provider>
