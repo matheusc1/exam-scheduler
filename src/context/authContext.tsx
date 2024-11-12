@@ -1,3 +1,4 @@
+import { verifyToken } from '@/http/verify-token'
 import { api } from '@/lib/axios'
 import {
   createContext,
@@ -51,12 +52,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    async function verifyToken() {
+    async function validateToken() {
       try {
-        const { data } = await api.get('/verify-token')
+        const { role, id } = await verifyToken()
         setIsAuthenticated(true)
-        setRole(data.user.role)
-        setUserId(data.user.id)
+        setRole(role)
+        setUserId(id)
       } catch (error) {
         setIsAuthenticated(false)
         setRole(null)
@@ -66,7 +67,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
     }
 
-    verifyToken()
+    validateToken()
   }, [])
 
   useEffect(() => {

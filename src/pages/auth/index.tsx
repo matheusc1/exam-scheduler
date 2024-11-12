@@ -5,8 +5,8 @@ import { useAuth } from '@/context/authContext'
 import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { api } from '@/lib/axios'
 import { useToast } from '@/hooks/use-toast'
+import { signIn } from '@/http/sign-in'
 
 const signInForm = z.object({
   email: z.string().email(),
@@ -28,16 +28,16 @@ export function SignIn() {
 
   async function handleLogin(formData: SignInForm) {
     try {
-      const { data } = await api.post('/login', {
+      const { role, id } = await signIn({
         email: formData.email,
         password: formData.password,
       })
 
-      login(data.role, data.id)
+      login(role, id)
 
-      if (data.role === 'admin') navigate('/admin')
-      if (data.role === 'coordinator') navigate('/coordination')
-      if (data.role === 'student') navigate('/')
+      if (role === 'admin') navigate('/admin')
+      if (role === 'coordinator') navigate('/coordination')
+      if (role === 'student') navigate('/')
     } catch (err) {
       toast({
         variant: 'destructive',
