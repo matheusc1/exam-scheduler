@@ -9,8 +9,34 @@ import {
 import { NavBar } from './nav-bar'
 import { MobileNavBar } from './mobile-nav-bar'
 import { UserMenu } from './user-menu'
+import { useAuth } from '@/context/authContext'
+import { api } from '@/lib/axios'
+import { useEffect, useState } from 'react'
+import type { StudentType } from '../../profile'
 
 export function Header() {
+  const [student, setStudent] = useState<StudentType>()
+  const { userId } = useAuth()
+
+  useEffect(() => {
+    async function getStudent() {
+      if (userId) {
+        const { data } = await api.get(`/students/${userId}`)
+
+        setStudent({
+          id: data.id,
+          ra: data.ra,
+          name: data.name,
+          email: data.email,
+          birthDate: data.birthDate,
+          supportCenter: data.supportCenter,
+        })
+      }
+    }
+
+    getStudent()
+  }, [userId])
+
   return (
     <Popover>
       <Collapsible>
@@ -31,7 +57,7 @@ export function Header() {
             </CollapsibleTrigger>
           </div>
 
-          <NavBar />
+          <NavBar name={student?.name ?? ''} email={student?.email ?? ''} />
         </div>
 
         <CollapsibleContent className="sm:hidden">
@@ -41,7 +67,7 @@ export function Header() {
         <Separator className="w-full mt-4" />
 
         <PopoverContent className="w-[224px] p-1">
-          <UserMenu />
+          <UserMenu name={student?.name ?? ''} />
         </PopoverContent>
       </Collapsible>
     </Popover>

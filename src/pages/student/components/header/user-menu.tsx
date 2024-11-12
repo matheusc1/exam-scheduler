@@ -5,11 +5,11 @@ import { Link } from 'react-router-dom'
 import ModeToggle from '../../../../components/theme/mode-toggle'
 import { useAuth } from '@/context/authContext'
 
-const Student = {
-  name: 'John Doe',
+interface UserMenuProps {
+  name: string
 }
 
-export function UserMenu() {
+export function UserMenu({ name }: UserMenuProps) {
   const { logout } = useAuth()
 
   function handleLogout() {
@@ -18,7 +18,7 @@ export function UserMenu() {
 
   return (
     <>
-      <div className="text-sm font-semibold p-2">{Student.name}</div>
+      <div className="text-sm font-semibold p-2">{name}</div>
       <Separator className="my-0.5" />
 
       <Link to="/profile">

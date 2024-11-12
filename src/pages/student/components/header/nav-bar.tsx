@@ -7,18 +7,17 @@ import { PopoverTrigger } from '../../../../components/ui/popover'
 import { LucideChevronDown } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
 
-const Student = {
-  name: 'John Doe',
-  email: 'john@acme.com',
-  avatar: 'https://github.com/matheusc1.png',
+interface NavBarProps {
+  name: string
+  email: string
 }
 
-export function NavBar() {
+export function NavBar({ name, email }: NavBarProps) {
   return (
     <>
       <div className="flex flex-1 items-center justify-center">
         <h1 className="bg-gradient-to-r from-[#2CACDD] to-[#0FB091] text-transparent bg-clip-text font-bold text-2xl">
-          UNIFAA
+          <NavLink to="/">UNIFAA</NavLink>
         </h1>
 
         <div className="hidden sm:flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
@@ -44,12 +43,14 @@ export function NavBar() {
 
       <div className="flex gap-3 items-center">
         <div className="text-right hidden sm:block">
-          <p className="font-medium text-sm">{Student.name}</p>
-          <p className="text-muted-foreground text-xs">{Student.email}</p>
+          <p className="font-medium text-sm">{name}</p>
+          <p className="text-muted-foreground text-xs">{email}</p>
         </div>
-        <Avatar className="size-8">
-          <AvatarImage src={Student.avatar} alt="Profile image" />
-          <AvatarFallback>{Student.name.charAt(0)}</AvatarFallback>
+        <Avatar className="size-8 hidden sm:block">
+          <AvatarImage alt="Profile image" />
+          <AvatarFallback className="bg-[#2CACDD] dark:bg-[#0FB091]">
+            {name.charAt(0)}
+          </AvatarFallback>
         </Avatar>
         <PopoverTrigger>
           <LucideChevronDown className="size-5 text-zinc-500 hover:text-zinc-300" />

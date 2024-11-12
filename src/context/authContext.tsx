@@ -43,8 +43,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
 
     verifyToken()
-    console.log(`AUTH PROVIDER: ${isAuthenticated}, ${role}`)
-  }, [isAuthenticated, role])
+  }, [])
 
   const login = (role: UserRole, id: string) => {
     setRole(role)
