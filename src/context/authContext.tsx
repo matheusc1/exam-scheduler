@@ -15,7 +15,10 @@ export interface StudentType {
   name: string
   email: string
   birthDate: string
-  supportCenter: string
+  supportCenter: {
+    id: string
+    name: string
+  }
 }
 
 interface AuthContextType {
@@ -37,7 +40,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     name: '',
     email: '',
     birthDate: '',
-    supportCenter: '',
+    supportCenter: {
+      id: '',
+      name: '',
+    },
   })
   const [role, setRole] = useState<UserRole>(null)
   const [userId, setUserId] = useState('')
@@ -68,12 +74,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (userId) {
         const { data } = await api.get(`/students/${userId}`)
         setStudent({
-          id: data.id,
-          ra: data.ra,
-          name: data.name,
-          email: data.email,
-          birthDate: data.birthDate,
-          supportCenter: data.supportCenter,
+          id: data.student.id,
+          ra: data.student.ra,
+          name: data.student.name,
+          email: data.student.email,
+          birthDate: data.student.birthDate,
+          supportCenter: {
+            id: data.student.supportCenter.id,
+            name: data.student.supportCenter.name,
+          },
         })
       }
     }

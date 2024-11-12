@@ -47,7 +47,7 @@ export function Profile() {
             <Input
               disabled
               id="supportCenter"
-              placeholder={student?.supportCenter}
+              placeholder={student?.supportCenter?.name}
             />
           </div>
         </div>
