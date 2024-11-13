@@ -1,5 +1,7 @@
-import { verifyToken } from '@/http/verify-token'
-import { api } from '@/lib/axios'
+import { logout } from '@/http/auth/logout'
+import { verifyToken } from '@/http/auth/verify-token'
+import { getStudent } from '@/http/student/get-student'
+import { useQuery } from '@tanstack/react-query'
 import {
   createContext,
   useContext,
@@ -23,29 +25,18 @@ export interface StudentType {
 }
 
 interface AuthContextType {
-  student: StudentType
+  student: StudentType | undefined
   role: UserRole
   userId: string
   isAuthenticated: boolean
   isLoading: boolean
   login: (role: UserRole, id: string) => void
-  logout: () => void
+  logoutFn: () => void
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [student, setStudent] = useState<StudentType>({
-    id: '',
-    ra: '',
-    name: '',
-    email: '',
-    birthDate: '',
-    supportCenter: {
-      id: '',
-      name: '',
-    },
-  })
   const [role, setRole] = useState<UserRole>(null)
   const [userId, setUserId] = useState('')
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -70,28 +61,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     validateToken()
   }, [])
 
-  useEffect(() => {
-    async function getStudent() {
-      if (userId) {
-        const { data } = await api.get(`/students/${userId}`)
-        setStudent({
-          id: data.student.id,
-          ra: data.student.ra,
-          name: data.student.name,
-          email: data.student.email,
-          birthDate: data.student.birthDate,
-          supportCenter: {
-            id: data.student.supportCenter.id,
-            name: data.student.supportCenter.name,
-          },
-        })
-      }
-    }
+  const { data: student } = useQuery<StudentType>({
+    queryKey: ['get-student'],
+    queryFn: () => getStudent({ userId }),
+    enabled: !!userId,
+    staleTime: Number.POSITIVE_INFINITY,
+  })
 
-    if (userId) {
-      getStudent()
-    }
-  }, [userId])
+  if (!student) return
 
   const login = (role: UserRole, id: string) => {
     setRole(role)
@@ -99,8 +76,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setIsAuthenticated(true)
   }
 
-  const logout = () => {
-    api.post('/logout').then(() => {
+  const logoutFn = async () => {
+    await logout().then(() => {
       setIsAuthenticated(false)
       setRole(null)
       setUserId('')
@@ -116,7 +93,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         isAuthenticated,
         isLoading,
         login,
-        logout,
+        logoutFn,
       }}
     >
       {children}

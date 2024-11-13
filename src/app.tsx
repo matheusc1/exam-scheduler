@@ -9,13 +9,13 @@ import { queryClient } from './lib/react-query'
 
 export function App() {
   return (
-    <AuthProvider>
-      <ThemeProvider>
-        <Toaster />
-        <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <ThemeProvider>
+          <Toaster />
           <RouterProvider router={router} />
-        </QueryClientProvider>
-      </ThemeProvider>
-    </AuthProvider>
+        </ThemeProvider>
+      </AuthProvider>
+    </QueryClientProvider>
   )
 }
