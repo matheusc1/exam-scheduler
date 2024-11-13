@@ -1,56 +1,98 @@
 import { ScheduleCard } from './schedule-card'
+import { useAuth } from '@/context/authContext'
+import { useQuery } from '@tanstack/react-query'
+import { getEnrollments } from '@/http/student/get-enrollments'
+import { getScheduledExams } from '@/http/student/get-scheduled-exams'
 
-const mandatoryExam = {
-  discpline: 'IA - Machine Learning',
-  type: 'A2',
-  availableSlots: [
-    { time: '09:00', spots: 3 },
-    { time: '10:00', spots: 2 },
-    { time: '11:00', spots: 0 },
-    { time: '12:00', spots: 1 },
-    { time: '13:00', spots: 3 },
-    { time: '14:00', spots: 4 },
-    { time: '15:00', spots: 0 },
-    { time: '16:00', spots: 5 },
-    { time: '17:00', spots: 1 },
-    { time: '18:00', spots: 0 },
-    { time: '19:00', spots: 0 },
-  ],
+interface Exam {
+  id: string
+  enrollmentId: string
+  disciplineName: string
+  type: string
 }
 
-const substituteExam = {
-  discpline: 'IA - Machine Learning',
-  type: 'A3',
-  availableSlots: [
-    { time: '09:00', spots: 0 },
-    { time: '10:00', spots: 2 },
-    { time: '11:00', spots: 0 },
-    { time: '12:00', spots: 0 },
-    { time: '13:00', spots: 3 },
-    { time: '14:00', spots: 4 },
-    { time: '15:00', spots: 0 },
-    { time: '16:00', spots: 5 },
-    { time: '17:00', spots: 1 },
-    { time: '18:00', spots: 0 },
-    { time: '19:00', spots: 1 },
-  ],
+interface Enrollment {
+  enrollmentId: string
+  disciplineName: string
+  periodStartDate: string
+  periodEndDate: string
+}
+
+interface ExamScheduled {
+  id: string
+  enrollmentId: string
+  discipline: string
+  type: string
+  scheduledDate: Date
 }
 
 export function Schedule() {
+  const { student } = useAuth()
+
+  const { data: enrollmentData } = useQuery<Enrollment[]>({
+    queryKey: ['get-enrollments'],
+    queryFn: () => getEnrollments({ studentRa: student?.ra! }),
+    enabled: !!student?.ra,
+    staleTime: Number.POSITIVE_INFINITY,
+  })
+
+  const { data: examsScheduled } = useQuery<ExamScheduled[]>({
+    queryKey: ['get-scheduled-exams'],
+    queryFn: () => getScheduledExams({ studentRa: student?.ra! }),
+    enabled: !!student?.ra,
+    staleTime: Number.POSITIVE_INFINITY,
+  })
+
+  const exams: Exam[] = enrollmentData?.length
+    ? enrollmentData.flatMap((enrollment: Enrollment) => [
+        {
+          id: crypto.randomUUID(),
+          enrollmentId: enrollment.enrollmentId,
+          disciplineName: enrollment.disciplineName,
+          type: 'mandatory',
+        },
+        {
+          id: crypto.randomUUID(),
+          enrollmentId: enrollment.enrollmentId,
+          disciplineName: enrollment.disciplineName,
+          type: 'substitute',
+        },
+      ])
+    : []
+
+  const examsToSchedule = exams.filter(exam => {
+    return !examsScheduled?.some(
+      scheduled =>
+        scheduled.enrollmentId === exam.enrollmentId &&
+        scheduled.type === (exam.type === 'mandatory' ? 'A2' : 'A3')
+    )
+  })
+
   return (
     <>
-      <div className="my-10 flex flex-col sm:flex-row gap-10 items-center sm:items-start">
-        <ScheduleCard
-          discpline={mandatoryExam.discpline}
-          type={mandatoryExam.type}
-          availableSlots={mandatoryExam.availableSlots}
-        />
-
-        <ScheduleCard
-          discpline={substituteExam.discpline}
-          type={substituteExam.type}
-          availableSlots={substituteExam.availableSlots}
-        />
+      <div className="my-10 flex flex-col flex-wrap sm:flex-row gap-10 items-center sm:items-start">
+        {examsScheduled?.map(scheduledExam => (
+          <ScheduleCard
+            key={scheduledExam.id}
+            scheduleId={scheduledExam.id}
+            enrollmentId={scheduledExam.enrollmentId}
+            discipline={scheduledExam.discipline}
+            type={scheduledExam.type}
+            scheduledDate={scheduledExam.scheduledDate}
+            isScheduled={true}
+          />
+        ))}
+        {examsToSchedule?.map(exam => (
+          <ScheduleCard
+            enrollmentId={exam.enrollmentId}
+            key={exam.id}
+            discipline={exam.disciplineName}
+            type={exam.type}
+          />
+        ))}
+        {!enrollmentData?.length && (
+          <div className="text-center w-full">Sem provas para realizar</div>
+        )}
       </div>
     </>
   )

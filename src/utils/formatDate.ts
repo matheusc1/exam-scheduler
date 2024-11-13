@@ -1,10 +1,16 @@
 import dayjs from 'dayjs'
 
-export function formatDate(date: Date, selectedHour: string) {
-  const [hours, minutes] = selectedHour.split(':').map(Number)
+import 'dayjs/locale/pt-br'
+import utc from 'dayjs/plugin/utc'
+import timezone from 'dayjs/plugin/timezone'
 
-  const selectedDate = dayjs(date).set('hour', hours).set('minute', minutes)
+dayjs.locale('pt-br')
+dayjs.extend(utc)
+dayjs.extend(timezone)
+dayjs.tz.setDefault('America/Sao_Paulo')
 
+export function formatDate(date: string) {
+  const selectedDate = dayjs(date)
   const finalHour = selectedDate.add(1, 'hour')
 
   return selectedDate.format(

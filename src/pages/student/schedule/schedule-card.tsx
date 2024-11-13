@@ -1,161 +1,133 @@
-import { LucideChevronDown } from 'lucide-react'
-import { Button } from '../../../components/ui/button'
-import { Label } from '../../../components/ui/label'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '../../../components/ui/popover'
-import { Calendar } from '../../../components/ui/calendar'
 import { useState } from 'react'
 import dayjs from 'dayjs'
 import 'dayjs/locale/pt-br'
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from '../../../components/ui/select'
 import { formatDate } from '@/utils/formatDate'
+import { useAuth } from '@/context/authContext'
+import { getAvailableDates } from '@/http/student/get-available-dates'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { getSlots } from '@/http/student/get-slots'
+import { createSchedule } from '@/http/student/create-schedule'
+import { updateSchedule } from '@/http/student/update-schedule'
+
+import { ScheduleAction } from './schedule-actions'
+import { ScheduleCardHeader } from './schedule-card-header'
+import { ScheduleDatePicker } from './schedule-date-picker'
+import { ScheduleTimePicker } from './schedule-time-picker'
 
 dayjs.locale('pt-br')
 
+export interface Slot {
+  id: string
+  time: string
+  availableSlots: number
+}
+
 interface ScheduleCardProps {
-  discpline: string
+  discipline: string
   type: string
-  availableSlots: {
-    time: string
-    spots: number
-  }[]
+  enrollmentId: string
+  scheduledDate?: Date
+  isScheduled?: boolean
+  scheduleId?: string
 }
 
 export function ScheduleCard({
-  discpline,
+  discipline,
   type,
-  availableSlots,
+  enrollmentId,
+  scheduledDate,
+  isScheduled,
+  scheduleId,
 }: ScheduleCardProps) {
+  const queryClient = useQueryClient()
+  const { student } = useAuth()
+
   const [date, setDate] = useState<Date | undefined>()
   const [selectedHour, setSelectedHour] = useState('')
-  const [cardOpen, setCardOpen] = useState(true)
-  const [examScheduled, setExamScheduled] = useState(false)
+  const [isEditing, setIsEditing] = useState(false)
 
-  function handleSchedule() {
-    setCardOpen(false)
-    setExamScheduled(true)
+  const { data: availableDates } = useQuery<Date[]>({
+    queryKey: ['get-available-dates'],
+    queryFn: async () => {
+      const availableDates = await getAvailableDates({
+        supportCenterId: student?.supportCenter.id!,
+      })
+      return availableDates.map((date: string) => dayjs(date).toISOString())
+    },
+    enabled: !!student?.supportCenter.id,
+    staleTime: Number.POSITIVE_INFINITY,
+  })
+
+  const { data: slots } = useQuery<Slot[]>({
+    queryKey: ['get-slots'],
+    queryFn: () =>
+      getSlots({
+        supportCenterId: student?.supportCenter.id!,
+        selectedDate: date!,
+      }),
+    enabled: !!student?.supportCenter.id && !!date,
+  })
+
+  async function handleSchedule() {
+    const selectedDate = dayjs(date)
+      .set('hour', Number.parseInt(selectedHour.split(':')[0]))
+      .set('minute', Number.parseInt(selectedHour.split(':')[1]))
+      .set('second', 0)
+
+    const scheduledDate = selectedDate.format()
+
+    console.log(date)
+
+    if (isEditing) {
+      await updateSchedule({
+        scheduleId: scheduleId!,
+        newScheduledDate: scheduledDate,
+      })
+      setIsEditing(false)
+    } else {
+      await createSchedule({
+        enrollmentId,
+        type,
+        scheduledDate,
+      })
+    }
+
+    queryClient.invalidateQueries({ queryKey: ['get-enrollments'] })
+    queryClient.invalidateQueries({ queryKey: ['get-scheduled-exams'] })
+    queryClient.invalidateQueries({ queryKey: ['get-slots'] })
   }
-
-  function handleReSchedule() {
-    setCardOpen(true)
-    setExamScheduled(false)
-  }
-
-  function handleSelect(value: string) {
-    setSelectedHour(value)
-  }
-
-  const selectedDate = date && formatDate(date, selectedHour)
 
   return (
     <div className="bg-zinc-100 dark:bg-zinc-900 space-y-6 w-89 sm:w-96 p-10 rounded-lg">
-      <div className="space-y-2">
-        <h2 className="font-bold text-lg">
-          {discpline} | {type}
-        </h2>
-        {cardOpen && (
-          <p className="text-zinc-800 dark:text-zinc-200 text-sm">
-            Selecione data e horário para agendar sua avaliação:
-          </p>
-        )}
-        {examScheduled && (
-          <p className="text-zinc-800 dark:text-zinc-200 text-sm">
-            Sua avaliação <span className="font-bold">{type}</span> está
-            agendada para o dia{' '}
-            <span className="font-bold">{selectedDate}.</span>
-          </p>
-        )}
-      </div>
+      <ScheduleCardHeader
+        isScheduled={isScheduled || false}
+        isEditing={isEditing}
+        discipline={discipline}
+        type={type}
+        selectedDate={
+          scheduledDate && formatDate(dayjs(scheduledDate).format())
+        }
+      />
 
-      {cardOpen && (
+      {isScheduled && !isEditing ? (
+        <ScheduleAction
+          onReSchedule={() => setIsEditing(true)}
+          isScheduled={true}
+        />
+      ) : (
         <>
-          <div className="space-y-3">
-            <div className="space-y-2">
-              <Label className="text-sm">Data</Label>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className="flex justify-between p-3 items-center w-full"
-                  >
-                    <span className="text-zinc-500 dark:text-zinc-400 text-sm font-semibold">
-                      {!date && 'Selecione a data da sua avaliação'}
-                      {date && dayjs(date).format('DD [de] MMMM [de] YYYY')}
-                    </span>
-                    <LucideChevronDown className="size-4 text-zinc-500" />
-                  </Button>
-                </PopoverTrigger>
-
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    initialFocus
-                    selected={date}
-                    onSelect={setDate}
-                    disabled={[{ dayOfWeek: [0] }, { before: new Date() }]}
-                  />
-                </PopoverContent>
-              </Popover>
-            </div>
-
-            <div className="space-y-2">
-              <Label className="text-sm">Horário</Label>
-              <Select onValueChange={handleSelect}>
-                <SelectTrigger className="text-zinc-500 dark:text-zinc-400 text-sm font-semibold hover:bg-accent">
-                  <SelectValue placeholder="Selecione o horário da sua avaliação" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Horários disponíveis</SelectLabel>
-                    {availableSlots.map(({ time, spots }) => (
-                      <>
-                        <SelectItem
-                          key={time}
-                          value={time}
-                          disabled={spots === 0}
-                        >
-                          {time}
-                        </SelectItem>
-                      </>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3 pt-2">
-            <Button variant="outline" className="uppercase py-5 w-button">
-              Cancelar
-            </Button>
-            <Button
-              onClick={handleSchedule}
-              className="w-button transition-colors uppercase bg-gradient-to-r from-[#2CACDD] to-[#0FB091] hover:from-[#1A8AC4] hover:to-[#0C926A]"
-            >
-              Agendar
-            </Button>
-          </div>
+          <ScheduleDatePicker
+            availableDates={availableDates!}
+            date={date}
+            setDate={setDate}
+          />
+          <ScheduleTimePicker
+            slots={slots}
+            selectedHour={selectedHour}
+            onSelect={setSelectedHour}
+          />
+          <ScheduleAction onSchedule={handleSchedule} isScheduled={false} />
         </>
-      )}
-
-      {examScheduled && (
-        <Button
-          onClick={handleReSchedule}
-          className="w-full transition-colors uppercase bg-gradient-to-r from-[#2CACDD] to-[#0FB091] hover:from-[#1A8AC4] hover:to-[#0C926A]"
-        >
-          Re-agendar
-        </Button>
       )}
     </div>
   )

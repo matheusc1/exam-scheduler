@@ -10,10 +10,10 @@ interface UserMenuProps {
 }
 
 export function UserMenu({ name }: UserMenuProps) {
-  const { logout } = useAuth()
+  const { logoutFn } = useAuth()
 
   function handleLogout() {
-    logout()
+    logoutFn()
   }
 
   return (
