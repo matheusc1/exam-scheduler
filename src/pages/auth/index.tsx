@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { useToast } from '@/hooks/use-toast'
-import { signIn } from '@/http/sign-in'
+import { signIn } from '@/http/auth/sign-in'
 
 const signInForm = z.object({
   email: z.string().email(),
