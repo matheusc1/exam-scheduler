@@ -1,18 +1,24 @@
+import dayjs from 'dayjs'
 import { Button } from '../../../components/ui/button'
 
 interface ScheduleActionProps {
-  onSchedule?: () => void
   onReSchedule?: () => void
   isScheduled: boolean
+  isSubmitting?: boolean
+  scheduledDate?: Date
 }
 
 export function ScheduleAction({
-  onSchedule,
   onReSchedule,
   isScheduled,
+  isSubmitting,
+  scheduledDate,
 }: ScheduleActionProps) {
+  const isWithin24Hours = dayjs(scheduledDate).diff(dayjs(), 'hour') < 24
+
   return isScheduled ? (
     <Button
+      disabled={isWithin24Hours}
       onClick={onReSchedule}
       className="w-full transition-colors uppercase bg-gradient-to-r from-[#2CACDD] to-[#0FB091] hover:from-[#1A8AC4] hover:to-[#0C926A]"
     >
@@ -24,7 +30,8 @@ export function ScheduleAction({
         Cancelar
       </Button>
       <Button
-        onClick={onSchedule}
+        disabled={isSubmitting}
+        type="submit"
         className="w-button transition-colors uppercase bg-gradient-to-r from-[#2CACDD] to-[#0FB091] hover:from-[#1A8AC4] hover:to-[#0C926A]"
       >
         Agendar

@@ -13,6 +13,9 @@ import { ScheduleAction } from './schedule-actions'
 import { ScheduleCardHeader } from './schedule-card-header'
 import { ScheduleDatePicker } from './schedule-date-picker'
 import { ScheduleTimePicker } from './schedule-time-picker'
+import { toast } from '@/hooks/use-toast'
+import { z } from 'zod'
+import { Controller, useForm } from 'react-hook-form'
 
 dayjs.locale('pt-br')
 
@@ -31,6 +34,13 @@ interface ScheduleCardProps {
   scheduleId?: string
 }
 
+const scheduleForm = z.object({
+  date: z.date(),
+  selectedHour: z.string(),
+})
+
+type ScheduleForm = z.infer<typeof scheduleForm>
+
 export function ScheduleCard({
   discipline,
   type,
@@ -42,9 +52,18 @@ export function ScheduleCard({
   const queryClient = useQueryClient()
   const { student } = useAuth()
 
-  const [date, setDate] = useState<Date | undefined>()
-  const [selectedHour, setSelectedHour] = useState('')
   const [isEditing, setIsEditing] = useState(false)
+
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    reset,
+    watch,
+    formState: { isSubmitting },
+  } = useForm<ScheduleForm>()
+
+  const { date } = watch()
 
   const { data: availableDates } = useQuery<Date[]>({
     queryKey: ['get-available-dates'],
@@ -63,38 +82,50 @@ export function ScheduleCard({
     queryFn: () =>
       getSlots({
         supportCenterId: student?.supportCenter.id!,
-        selectedDate: date!,
+        selectedDate: date,
       }),
     enabled: !!student?.supportCenter.id && !!date,
   })
 
-  async function handleSchedule() {
-    const selectedDate = dayjs(date)
-      .set('hour', Number.parseInt(selectedHour.split(':')[0]))
-      .set('minute', Number.parseInt(selectedHour.split(':')[1]))
-      .set('second', 0)
+  async function handleSchedule({ date, selectedHour }: ScheduleForm) {
+    try {
+      const selectedDate = dayjs(date)
+        .set('hour', Number.parseInt(selectedHour.split(':')[0]))
+        .set('minute', Number.parseInt(selectedHour.split(':')[1]))
+        .set('second', 0)
 
-    const scheduledDate = selectedDate.format()
+      const scheduledDate = selectedDate.format()
 
-    console.log(date)
-
-    if (isEditing) {
-      await updateSchedule({
-        scheduleId: scheduleId!,
-        newScheduledDate: scheduledDate,
+      if (isEditing) {
+        await updateSchedule({
+          scheduleId: scheduleId!,
+          newScheduledDate: scheduledDate,
+        })
+        setIsEditing(false)
+      } else {
+        await createSchedule({
+          enrollmentId,
+          type,
+          scheduledDate,
+        })
+      }
+      toast({
+        title: 'Avaliação agendada com sucesso!',
       })
-      setIsEditing(false)
-    } else {
-      await createSchedule({
-        enrollmentId,
-        type,
-        scheduledDate,
+      reset()
+    } catch (err) {
+      console.error(err)
+      toast({
+        variant: 'destructive',
+        title: 'Error ao agendar avaliação',
+        description:
+          'Ocorreu um erro ao agendar a avaliação, tente novamente mais tarde!',
       })
+    } finally {
+      queryClient.invalidateQueries({ queryKey: ['get-enrollments'] })
+      queryClient.invalidateQueries({ queryKey: ['get-scheduled-exams'] })
+      queryClient.invalidateQueries({ queryKey: ['get-slots'] })
     }
-
-    queryClient.invalidateQueries({ queryKey: ['get-enrollments'] })
-    queryClient.invalidateQueries({ queryKey: ['get-scheduled-exams'] })
-    queryClient.invalidateQueries({ queryKey: ['get-slots'] })
   }
 
   return (
@@ -111,23 +142,37 @@ export function ScheduleCard({
 
       {isScheduled && !isEditing ? (
         <ScheduleAction
+          scheduledDate={scheduledDate}
           onReSchedule={() => setIsEditing(true)}
           isScheduled={true}
         />
       ) : (
-        <>
-          <ScheduleDatePicker
-            availableDates={availableDates!}
-            date={date}
-            setDate={setDate}
+        <form className="space-y-6" onSubmit={handleSubmit(handleSchedule)}>
+          <Controller
+            name="date"
+            control={control}
+            render={({ field }) => (
+              <ScheduleDatePicker
+                availableDates={availableDates!}
+                date={field.value}
+                setDate={(value: Date) => setValue('date', value)}
+              />
+            )}
           />
-          <ScheduleTimePicker
-            slots={slots}
-            selectedHour={selectedHour}
-            onSelect={setSelectedHour}
+          <Controller
+            name="selectedHour"
+            control={control}
+            render={({ field }) => (
+              <ScheduleTimePicker
+                slots={slots}
+                selectedHour={field.value}
+                onSelect={hour => setValue('selectedHour', hour)}
+              />
+            )}
           />
-          <ScheduleAction onSchedule={handleSchedule} isScheduled={false} />
-        </>
+
+          <ScheduleAction isSubmitting={isSubmitting} isScheduled={false} />
+        </form>
       )}
     </div>
   )

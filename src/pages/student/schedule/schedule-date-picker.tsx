@@ -15,7 +15,7 @@ dayjs.locale('pt-br')
 interface ScheduleDatePickerProps {
   availableDates: Date[]
   date: Date | undefined
-  setDate: (date: Date | undefined) => void
+  setDate: (date: Date) => void
 }
 
 export function ScheduleDatePicker({
@@ -45,7 +45,11 @@ export function ScheduleDatePicker({
             mode="single"
             initialFocus
             selected={date}
-            onSelect={setDate}
+            onSelect={(selectedDate) => {
+              if (selectedDate) {
+                setDate(selectedDate)
+              }
+            }}
             disabled={date => {
               return (
                 !availableDates?.some(availableDate =>
