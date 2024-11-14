@@ -22,7 +22,7 @@ export function NavBar({ name, email }: NavBarProps) {
 
         <div className="hidden sm:flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
           <div className="hidden sm:ml-6 sm:block">
-            <div className="flex space-x-3">
+            <div className="flex space-x-2">
               <NavLink
                 to="/"
                 className="rounded-full px-3 py-2 text-sm font-medium text-center aria-[current=page]:bg-secondary hover:bg-secondary"

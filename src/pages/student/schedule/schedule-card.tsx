@@ -117,7 +117,7 @@ export function ScheduleCard({
       console.error(err)
       toast({
         variant: 'destructive',
-        title: 'Error ao agendar avaliação',
+        title: 'Erro ao agendar avaliação',
         description:
           'Ocorreu um erro ao agendar a avaliação, tente novamente mais tarde!',
       })
@@ -126,6 +126,15 @@ export function ScheduleCard({
       queryClient.invalidateQueries({ queryKey: ['get-scheduled-exams'] })
       queryClient.invalidateQueries({ queryKey: ['get-slots'] })
     }
+  }
+
+  function handleCancel() {
+    reset({
+      date: undefined,
+      selectedHour: '',
+    })
+
+    if (isEditing) setIsEditing(false)
   }
 
   return (
@@ -142,6 +151,7 @@ export function ScheduleCard({
 
       {isScheduled && !isEditing ? (
         <ScheduleAction
+          onCancel={handleCancel}
           scheduledDate={scheduledDate}
           onReSchedule={() => setIsEditing(true)}
           isScheduled={true}
@@ -171,7 +181,11 @@ export function ScheduleCard({
             )}
           />
 
-          <ScheduleAction isSubmitting={isSubmitting} isScheduled={false} />
+          <ScheduleAction
+            onCancel={handleCancel}
+            isSubmitting={isSubmitting}
+            isScheduled={false}
+          />
         </form>
       )}
     </div>
