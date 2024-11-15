@@ -61,14 +61,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     validateToken()
   }, [])
 
-  const { data: student } = useQuery<StudentType>({
+  const { data: student, error } = useQuery<StudentType>({
     queryKey: ['get-student'],
     queryFn: () => getStudent({ userId }),
-    enabled: !!userId,
+    enabled: !!userId && role === 'student',
     staleTime: Number.POSITIVE_INFINITY,
+    retry: 3,
   })
-
-  if (!student) return
 
   const login = (role: UserRole, id: string) => {
     setRole(role)
@@ -82,6 +81,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setRole(null)
       setUserId('')
     })
+  }
+
+  if (error) {
+    logoutFn()
   }
 
   return (
