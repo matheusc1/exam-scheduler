@@ -36,7 +36,7 @@ export function SignIn() {
       login(role, id)
 
       if (role === 'admin') navigate('/admin')
-      if (role === 'coordinator') navigate('/coordination')
+      if (role === 'coordinator') navigate('/coordination/select')
       if (role === 'student') navigate('/')
     } catch (err) {
       toast({

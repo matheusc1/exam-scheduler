@@ -1,7 +1,74 @@
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+import { getSchedules } from '@/http/coordination/get-schedules'
+import { formatScheduledDate } from '@/utils/formatScheduledDate'
+import { useQuery } from '@tanstack/react-query'
+import { useParams } from 'react-router-dom'
+
+interface Schedule {
+  id: string
+  studentName: string
+  disciplineName: string
+  scheduledDate: Date
+  type: string
+}
+
 export function CoordinationPage() {
+  const { supportCenterId } = useParams()
+
+  const { data: schedules } = useQuery<Schedule[]>({
+    queryKey: ['get-schedules', supportCenterId],
+    queryFn: () => {
+      if (supportCenterId) {
+        return getSchedules({ supportCenterId })
+      }
+      return []
+    },
+    enabled: !!supportCenterId,
+    staleTime: 10 * (60 * 1000), // 10 min
+  })
+
   return (
-    <div>
-      <h1>coordination</h1>
+    <div className="my-5 w-full space-y-5">
+      <h2 className="font-semibold text-lg">Avaliações agendadas</h2>
+
+      <Table>
+        <TableCaption>Avaliações agendadas</TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Aluno</TableHead>
+            <TableHead>Disciplina</TableHead>
+            <TableHead>Data</TableHead>
+            <TableHead className="text-right">Tipo</TableHead>
+          </TableRow>
+        </TableHeader>
+
+        <TableBody>
+          {schedules?.map(schedule => (
+            <TableRow key={schedule.id}>
+              <TableCell className="font-medium w-72">
+                {schedule.studentName}
+              </TableCell>
+              <TableCell className="font-medium">
+                {schedule.disciplineName}
+              </TableCell>
+              <TableCell className="font-medium">
+                {formatScheduledDate(schedule.scheduledDate)}
+              </TableCell>
+              <TableCell className="font-medium text-right">
+                {schedule.type}
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     </div>
   )
 }
