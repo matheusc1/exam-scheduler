@@ -1,8 +1,8 @@
-import { Separator } from '../../../../components/ui/separator'
+import { Separator } from '../../../components/ui/separator'
 import { LucideSettings, LucideMoon, LucideLogOut } from 'lucide-react'
-import { Button } from '../../../../components/ui/button'
+import { Button } from '../../../components/ui/button'
 import { Link } from 'react-router-dom'
-import ModeToggle from '../../../../components/theme/mode-toggle'
+import ModeToggle from '../../../components/theme/mode-toggle'
 import { useAuth } from '@/context/authContext'
 
 interface UserMenuProps {

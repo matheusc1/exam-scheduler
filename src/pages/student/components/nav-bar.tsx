@@ -2,8 +2,8 @@ import {
   Avatar,
   AvatarImage,
   AvatarFallback,
-} from '../../../../components/ui/avatar'
-import { PopoverTrigger } from '../../../../components/ui/popover'
+} from '../../../components/ui/avatar'
+import { PopoverTrigger } from '../../../components/ui/popover'
 import { LucideChevronDown } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
 

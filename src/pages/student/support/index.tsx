@@ -11,7 +11,7 @@ export function Support() {
         </div>
 
         <div className="flex flex-col sm:flex-row items-center gap-5">
-          <div className="w-64 px-4 py-6 space-y-20 border border-zinc-300 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-900 rounded-md">
+          <div className="w-64 px-4 py-6 space-y-20 border border-zinc-400 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900 rounded-md">
             <LucideMail className="size-6 text-zinc-800 dark:text-zinc-200" />
 
             <div className="space-y-3">
@@ -33,7 +33,7 @@ export function Support() {
             </div>
           </div>
 
-          <div className="w-64 px-4 py-6 space-y-20 border border-zinc-300 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-900 rounded-md">
+          <div className="w-64 px-4 py-6 space-y-20 border border-zinc-400 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900 rounded-md">
             <LucidePhone className="size-6 text-zinc-800 dark:text-zinc-200" />
 
             <div className="space-y-3">
@@ -57,7 +57,7 @@ export function Support() {
             </div>
           </div>
 
-          <div className="w-64 px-4 py-6 space-y-20 border border-zinc-300 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-900 rounded-md">
+          <div className="w-64 px-4 py-6 space-y-20 border border-zinc-400 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900 rounded-md">
             <LucideMapPinned className="size-6 text-zinc-800 dark:text-zinc-200" />
 
             <div className="space-y-3">

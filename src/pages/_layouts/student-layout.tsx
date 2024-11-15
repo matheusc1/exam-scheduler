@@ -1,9 +1,9 @@
-import { Header } from '@/pages/student/components/header/header'
+import { Header } from '@/pages/student/components/header'
 import { useAuth } from '@/context/authContext'
 import { useEffect } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
 
-export function Layout() {
+export function StudentLayout() {
   const navigate = useNavigate()
   const { isLoading, isAuthenticated, role } = useAuth()
 
