@@ -40,7 +40,9 @@ export function CoordinationPage() {
       <h2 className="font-semibold text-lg">Avaliações agendadas</h2>
 
       <Table>
-        <TableCaption>Avaliações agendadas</TableCaption>
+        <TableCaption>
+          {!schedules?.length ? 'Nenhuma avaliação agendada!' : 'Agendamentos'}
+        </TableCaption>
         <TableHeader>
           <TableRow>
             <TableHead>Aluno</TableHead>
