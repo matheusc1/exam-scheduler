@@ -4,7 +4,7 @@ import { DialogTrigger } from '@/components/ui/dialog'
 interface SupportCenterHeaderProps {
   title: string
   text: string
-  setModalAction: (action: 'edit' | 'delete' | 'add' | null) => void
+  setModalAction: (action: 'add' | 'deleteAll' | null) => void
 }
 
 export function PageHeader({

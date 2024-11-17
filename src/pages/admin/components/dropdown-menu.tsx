@@ -10,7 +10,7 @@ import { Separator } from '@/components/ui/separator'
 import { LucideMoreHorizontal, LucideEdit2, LucideTrash2 } from 'lucide-react'
 
 interface DropdownMenuActionsProps {
-  setModalAction: (action: 'edit' | 'delete' | 'add' | null) => void
+  setModalAction: (action: 'edit' | 'delete' | null) => void
   setId: (id: string) => void
   itemId: string
   hasEdit: boolean

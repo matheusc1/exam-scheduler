@@ -19,7 +19,7 @@ import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { createSupportCenter } from '@/http/admin/create-suppor-center'
 import { updateSupportCenter } from '@/http/admin/update-support-center'
-import { SupportCenterTableRow } from './support-center-table'
+import { SupportCenterTableRow } from './support-center-row'
 import { PageHeader } from '../components/page-header'
 import { Button } from '@/components/ui/button'
 import { DialogFooter } from '@/components/ui/dialog'
@@ -42,7 +42,7 @@ type AddSupportCenterForm = z.infer<typeof addSupportCenterForm>
 export function SupportCenter() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [modalAction, setModalAction] = useState<
-    'add' | 'edit' | 'delete' | null
+    'add' | 'edit' | 'delete' | 'deleteAll' | null
   >(null)
   const [selectedSupportCenterId, setSelectedSupportCenterId] = useState<
     string | null

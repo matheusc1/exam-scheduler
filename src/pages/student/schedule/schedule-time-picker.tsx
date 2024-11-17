@@ -42,7 +42,7 @@ export function ScheduleTimePicker({
             ))}
             {!slots?.length && (
               <SelectItem value="null" disabled>
-                Selecione uma data
+                Nenhum horário disponível
               </SelectItem>
             )}
           </SelectGroup>
