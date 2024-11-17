@@ -8,7 +8,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { getSchedules } from '@/http/coordination/get-schedules'
-import { formatScheduledDate } from '@/utils/formatScheduledDate'
+import { formatScheduledDate } from '@/utils/format-scheduled-date'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 

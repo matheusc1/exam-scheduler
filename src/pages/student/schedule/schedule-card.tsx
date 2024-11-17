@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import dayjs from 'dayjs'
 import 'dayjs/locale/pt-br'
-import { formatDate } from '@/utils/formatDate'
+import { formatDate } from '@/utils/format-date'
 import { useAuth } from '@/context/authContext'
 import { getAvailableDates } from '@/http/student/get-available-dates'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
