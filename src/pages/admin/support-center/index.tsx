@@ -10,17 +10,21 @@ import {
 import { getSupportCenters } from '@/http/coordination/get-support-centers'
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
-import { DeleteModal } from './delete-modal'
+import { DeleteModal } from '../components/delete-modal'
 import { deleteSupportCenter } from '@/http/admin/delete-support-center'
 import { queryClient } from '@/lib/react-query'
 import { toast } from '@/hooks/use-toast'
-import { CreateAndEditModal } from './create-and-edit-modal'
+import { CreateAndEditModal } from '../components/create-and-edit-modal'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { createSupportCenter } from '@/http/admin/create-suppor-center'
 import { updateSupportCenter } from '@/http/admin/update-support-center'
 import { SupportCenterTableRow } from './support-center-table'
-import { SupportCenterHeader } from './support-center-header'
+import { PageHeader } from '../components/page-header'
+import { Button } from '@/components/ui/button'
+import { DialogFooter } from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 
 interface SupportCenter {
   id: string
@@ -130,7 +134,11 @@ export function SupportCenter() {
   return (
     <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
       <div className="my-5 w-full space-y-5">
-        <SupportCenterHeader setModalAction={setModalAction} />
+        <PageHeader
+          title="Polos"
+          text="Adicionar polo"
+          setModalAction={setModalAction}
+        />
 
         <Table>
           <TableCaption>
@@ -149,7 +157,7 @@ export function SupportCenter() {
                 key={supportCenter.id}
                 supportCenter={supportCenter}
                 setModalAction={setModalAction}
-                setSelectedSupportCenterId={setSelectedSupportCenterId}
+                setId={setSelectedSupportCenterId}
               />
             ))}
           </TableBody>
@@ -159,16 +167,49 @@ export function SupportCenter() {
       {modalAction === 'delete' && (
         <DeleteModal onCancel={resetModalState} onDelete={handleDelete} />
       )}
+
       {modalAction === 'add' || modalAction === 'edit' ? (
-        <CreateAndEditModal
-          handleSubmit={handleSubmit}
-          handleCancel={resetModalState}
-          handleCreateSupportCenter={handleCreateSupportCenter}
-          handleEditSupportCenter={handleEditSupportCenter}
-          isSubmitting={isSubmitting}
-          modalAction={modalAction}
-          register={register}
-        />
+        <CreateAndEditModal>
+          <form
+            className="space-y-3"
+            onSubmit={handleSubmit(
+              modalAction === 'add'
+                ? handleCreateSupportCenter
+                : handleEditSupportCenter
+            )}
+          >
+            <div className="space-y-1">
+              <Label>Nome</Label>
+              <Input
+                className="w-full"
+                type="text"
+                placeholder="Nome do polo"
+                {...register('name')}
+                required
+              />
+            </div>
+
+            <div className="space-y-1">
+              <Label>Número de computadores</Label>
+              <Input
+                className="w-full"
+                type="number"
+                placeholder="Quantidade de computadores"
+                {...register('numberOfComputers', { valueAsNumber: true })}
+                required
+              />
+            </div>
+
+            <DialogFooter>
+              <Button onClick={resetModalState} variant="outline" type="button">
+                Cancelar
+              </Button>
+              <Button disabled={isSubmitting} type="submit">
+                Confirmar
+              </Button>
+            </DialogFooter>
+          </form>
+        </CreateAndEditModal>
       ) : null}
     </Dialog>
   )
