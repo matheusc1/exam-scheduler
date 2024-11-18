@@ -7,9 +7,15 @@ import { Profile } from '../pages/student/profile'
 import { SignIn } from '../pages/auth'
 import { StudentLayout } from '../pages/_layouts/student-layout'
 import { CoordinationLayout } from '../pages/_layouts/coordination-layout'
-import { AdminPage } from '@/pages/admin'
+import { SupportCenter } from '@/pages/admin/support-center'
 import { CoordinationPage } from '@/pages/coordination'
 import { SelectSupportCenter } from '@/pages/coordination/select-support-center'
+import { AdminLayout } from '@/pages/_layouts/admin-layout'
+import { OperatingHours } from '@/pages/admin/operating-hours'
+import { AdmSelectSupportCenter } from '@/pages/admin/components/select-support-center'
+import { AvailableDates } from '@/pages/admin/available-dates'
+import { Periods } from '@/pages/admin/periods'
+import { Disciplines } from '@/pages/admin/disciplines'
 
 export const router = createBrowserRouter([
   {
@@ -29,7 +35,31 @@ export const router = createBrowserRouter([
 
   {
     path: '/admin',
-    element: <AdminPage />,
+    element: <AdminLayout />,
+    children: [
+      { path: '/admin/support-center', element: <SupportCenter /> },
+      {
+        path: '/admin/operating-hours',
+        element: <AdmSelectSupportCenter path="operating-hours" />,
+      },
+      {
+        path: '/admin/operating-hours/:supportCenterId',
+        element: <OperatingHours />,
+      },
+      {
+        path: '/admin/available-dates',
+        element: <AdmSelectSupportCenter path="available-dates" />,
+      },
+      {
+        path: '/admin/available-dates/:supportCenterId',
+        element: <AvailableDates />,
+      },
+      { path: '/admin/periods', element: <Periods /> },
+      { path: '/admin/disciplines', element: <Disciplines /> },
+      { path: '/admin/students' },
+      { path: '/admin/enrollments' },
+      { path: '/admin/schedules' },
+    ],
   },
 
   {
