@@ -1,23 +1,84 @@
 import { Button } from '@/components/ui/button'
-import { DialogTrigger } from '@/components/ui/dialog'
+import { ModalAction, useModalContext } from '@/context/modal-context'
+import { LucideChevronLeft } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 interface SupportCenterHeaderProps {
+  previousPath?: string
   title: string
   text: string
-  setModalAction: (action: 'add' | 'deleteAll' | null) => void
+  hasAdd?: boolean
+  hasDeleteAll?: boolean
 }
 
 export function PageHeader({
+  previousPath,
   title,
   text,
-  setModalAction,
+  hasAdd,
+  hasDeleteAll,
 }: SupportCenterHeaderProps) {
+  const { setModalAction, setIsModalOpen } = useModalContext()
+
   return (
     <div className="space-y-2">
-      <h2 className="font-semibold text-lg">{title}</h2>
-      <DialogTrigger asChild>
-        <Button onClick={() => setModalAction('add')}>{text}</Button>
-      </DialogTrigger>
+      {previousPath ? (
+        <div className="flex items-center gap-2">
+          <Link to={`/admin/${previousPath}`}>
+            <LucideChevronLeft className="size-4 hover:opacity-50" />
+          </Link>
+          <h2 className="font-semibold text-lg">{title}</h2>
+        </div>
+      ) : (
+        <h2 className="font-semibold text-lg">{title}</h2>
+      )}
+
+      {hasAdd && hasDeleteAll ? (
+        <div className="flex items-center justify-between gap-4">
+          <Button
+            onClick={() => {
+              setModalAction(ModalAction.Add)
+              setIsModalOpen(true)
+            }}
+          >
+            {text}
+          </Button>
+
+          <Button
+            variant="destructive"
+            onClick={() => {
+              setModalAction(ModalAction.DeleteAll)
+              setIsModalOpen(true)
+            }}
+          >
+            Deletar todos os registros
+          </Button>
+        </div>
+      ) : (
+        <>
+          {hasAdd && (
+            <Button
+              onClick={() => {
+                setModalAction(ModalAction.Add)
+                setIsModalOpen(true)
+              }}
+            >
+              {text}
+            </Button>
+          )}
+          {hasDeleteAll && (
+            <Button
+              variant="destructive"
+              onClick={() => {
+                setModalAction(ModalAction.DeleteAll)
+                setIsModalOpen(true)
+              }}
+            >
+              Deletar todos os registros
+            </Button>
+          )}
+        </>
+      )}
     </div>
   )
 }

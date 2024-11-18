@@ -1,5 +1,5 @@
-import { Link, useParams } from 'react-router-dom'
-import { Dialog, DialogFooter, DialogTrigger } from '@/components/ui/dialog'
+import { useParams } from 'react-router-dom'
+import { Dialog } from '@/components/ui/dialog'
 import {
   Table,
   TableCaption,
@@ -8,16 +8,12 @@ import {
   TableHead,
   TableBody,
 } from '@/components/ui/table'
-import { Button } from '@/components/ui/button'
-import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { getOperatingHours } from '@/http/admin/get-operating-hours'
-import { LucideChevronLeft } from 'lucide-react'
 import { deleteOperatingHours } from '@/http/admin/delete-operating-hours'
-import { toast } from '@/hooks/use-toast'
 import { queryClient } from '@/lib/react-query'
 import { DeleteModal } from '../components/delete-modal'
-import { OperatingHoursTableRow } from './operating-hours-row'
+import { OperatingHoursRow } from './operating-hours-row'
 import { z } from 'zod'
 import { Controller, useForm } from 'react-hook-form'
 import { CreateAndEditModal } from '../components/create-and-edit-modal'
@@ -34,6 +30,10 @@ import {
 import { createOperatingHours } from '@/http/admin/create-operating-hours'
 import { updateOperatingHours } from '@/http/admin/update-operating-hours'
 import { weekDays } from '@/utils/weekDays'
+import { useModalContext } from '@/context/modal-context'
+import { triggerToast } from '@/utils/trigger-toast'
+import { PageHeader } from '../components/page-header'
+import { ModalFooter } from '../components/modal-footer'
 
 interface OperatingHours {
   id: string
@@ -52,16 +52,18 @@ type AddOperatingHoursForm = z.infer<typeof addOperatingHoursForm>
 
 export function OperatingHours() {
   const { supportCenterId } = useParams()
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [modalAction, setModalAction] = useState<
-    'add' | 'edit' | 'delete' | 'deleteAll' | null
-  >(null)
-  const [selectedOperatingHoursId, setSelectedOperatingHoursId] = useState<
-    string | null
-  >(null)
+  const {
+    isModalOpen,
+    modalAction,
+    resetModalState,
+    setModalAction,
+    setIsModalOpen,
+    selectedId,
+  } = useModalContext()
+  const { success, error } = triggerToast()
 
   const { data: operatingHours } = useQuery<OperatingHours[]>({
-    queryKey: ['get-operating-hours'],
+    queryKey: ['get-operating-hours', supportCenterId],
     queryFn: () => getOperatingHours({ supportCenterId: supportCenterId! }),
     enabled: !!supportCenterId,
     staleTime: Number.POSITIVE_INFINITY,
@@ -81,35 +83,18 @@ export function OperatingHours() {
     },
   })
 
-  function resetModalState() {
-    setModalAction(null)
-    setSelectedOperatingHoursId(null)
-    setIsModalOpen(false)
-  }
-
-  function handleError(error: unknown, action: string) {
-    console.error(error)
-    toast({
-      variant: 'destructive',
-      title: `Erro ao ${action} registro`,
-      description: `Ocorreu um erro ao ${action} o registro, tente novamente mais tarde!`,
-    })
-  }
-
   async function handleDelete() {
     try {
-      if (selectedOperatingHoursId) {
+      if (selectedId) {
         await deleteOperatingHours({
           supportCenterId: supportCenterId!,
-          operatingHoursId: selectedOperatingHoursId,
+          operatingHoursId: selectedId,
         })
         queryClient.invalidateQueries({ queryKey: ['get-operating-hours'] })
       }
-      toast({
-        title: 'Registro deletado com sucesso!',
-      })
-    } catch (error) {
-      handleError(error, 'deletar')
+      success('Registro excluido com sucesso!')
+    } catch (err) {
+      error('deletar')
     } finally {
       resetModalState()
     }
@@ -127,35 +112,29 @@ export function OperatingHours() {
         closeTime: data.closeTime,
       })
       queryClient.invalidateQueries({ queryKey: ['get-operating-hours'] })
-      toast({
-        title: 'Horários registrados com sucesso!',
-      })
+      success('Horários registrados com sucesso!')
       reset()
-    } catch (error) {
-      handleError(error, 'criar')
+    } catch (err) {
+      error('criar')
     }
   }
 
   async function handleEditOperatingHours(data: AddOperatingHoursForm) {
     try {
-      if (!supportCenterId || !selectedOperatingHoursId) return
+      if (!supportCenterId || !selectedId) return
 
       await updateOperatingHours({
         supportCenterId,
-        operatingHoursId: selectedOperatingHoursId,
+        operatingHoursId: selectedId,
         weekDay: Number(data.weekDays),
         openTime: data.openTime,
         closeTime: data.closeTime,
       })
       queryClient.invalidateQueries({ queryKey: ['get-operating-hours'] })
-
-      toast({
-        title: 'Horário atualizado com sucesso!',
-      })
-
+      success('Horário atualizado com sucesso!')
       reset()
-    } catch (error) {
-      handleError(error, 'editar')
+    } catch (err) {
+      error('editar')
     } finally {
       resetModalState()
     }
@@ -164,19 +143,12 @@ export function OperatingHours() {
   return (
     <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
       <div className="my-5 w-full space-y-5">
-        <div className="space-y-2">
-          <div className="flex items-center gap-2">
-            <Link to="/admin/operating-hours">
-              <LucideChevronLeft className="size-4 hover:opacity-50" />
-            </Link>
-            <h2 className="font-semibold text-lg">Horários de funcionamento</h2>
-          </div>
-          <DialogTrigger asChild>
-            <Button onClick={() => setModalAction('add')}>
-              Adicionar horário de funcionamento
-            </Button>
-          </DialogTrigger>
-        </div>
+        <PageHeader
+          previousPath="operating-hours"
+          hasAdd
+          title="Horários de funcionamento"
+          text="Adicionar horário de funcionamento"
+        />
 
         <Table>
           <TableCaption>
@@ -194,10 +166,9 @@ export function OperatingHours() {
 
           <TableBody>
             {operatingHours?.map(operatingHour => (
-              <OperatingHoursTableRow
+              <OperatingHoursRow
                 key={operatingHour.id}
                 operatingHour={operatingHour}
-                setId={setSelectedOperatingHoursId}
                 setModalAction={setModalAction}
               />
             ))}
@@ -206,10 +177,10 @@ export function OperatingHours() {
       </div>
 
       {modalAction === 'delete' && (
-        <DeleteModal onCancel={resetModalState} onDelete={handleDelete} />
+        <DeleteModal reset={reset} onDelete={handleDelete} />
       )}
 
-      {modalAction === 'add' || modalAction === 'edit' ? (
+      {(modalAction === 'add' || modalAction === 'edit') && (
         <CreateAndEditModal>
           <form
             className="space-y-3"
@@ -276,17 +247,10 @@ export function OperatingHours() {
               />
             </div>
 
-            <DialogFooter>
-              <Button onClick={resetModalState} variant="outline" type="button">
-                Cancelar
-              </Button>
-              <Button disabled={isSubmitting} type="submit">
-                Confirmar
-              </Button>
-            </DialogFooter>
+            <ModalFooter reset={reset} isSubmitting={isSubmitting} />
           </form>
         </CreateAndEditModal>
-      ) : null}
+      )}
     </Dialog>
   )
 }

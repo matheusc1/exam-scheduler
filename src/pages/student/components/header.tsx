@@ -9,7 +9,7 @@ import {
 import { NavBar } from './nav-bar'
 import { MobileNavBar } from './mobile-nav-bar'
 import { UserMenu } from './user-menu'
-import { useAuth } from '@/context/authContext'
+import { useAuth } from '@/context/auth-context'
 
 export function Header() {
   const { student } = useAuth()

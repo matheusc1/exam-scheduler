@@ -5,8 +5,9 @@ import {
 } from '@/components/ui/sidebar'
 import { AppSidebar } from '../admin/components/app-sidebar'
 import { Outlet, useNavigate } from 'react-router-dom'
-import { useAuth } from '@/context/authContext'
+import { useAuth } from '@/context/auth-context'
 import { useEffect } from 'react'
+import { ModalProvider } from '@/context/modal-context'
 
 export function AdminLayout() {
   const navigate = useNavigate()
@@ -28,8 +29,9 @@ export function AdminLayout() {
           <div className="flex items-center gap-2">
             <SidebarTrigger className="-ml-1" />
           </div>
-
-          <Outlet />
+          <ModalProvider>
+            <Outlet />
+          </ModalProvider>
         </div>
       </SidebarInset>
     </SidebarProvider>

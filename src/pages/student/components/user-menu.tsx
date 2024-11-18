@@ -3,7 +3,7 @@ import { LucideSettings, LucideMoon, LucideLogOut } from 'lucide-react'
 import { Button } from '../../../components/ui/button'
 import { Link } from 'react-router-dom'
 import ModeToggle from '../../../components/theme/mode-toggle'
-import { useAuth } from '@/context/authContext'
+import { useAuth } from '@/context/auth-context'
 
 interface UserMenuProps {
   name: string

@@ -12,7 +12,7 @@ import {
   SidebarMenuButton,
   useSidebar,
 } from '@/components/ui/sidebar'
-import { useAuth } from '@/context/authContext'
+import { useAuth } from '@/context/auth-context'
 import { LucideChevronsUpDown, LucideLogOut, LucideMoon } from 'lucide-react'
 
 export function NavFooter() {

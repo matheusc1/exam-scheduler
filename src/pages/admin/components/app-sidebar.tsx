@@ -6,7 +6,6 @@ import {
   LucideCalendarClock,
   LucideCalendarDays,
   LucideCalendarRange,
-  LucideClock,
   LucideGraduationCap,
   LucideHourglass,
   LucideSquarePi,
@@ -20,11 +19,6 @@ const routes = [
     url: '/admin/operating-hours',
     name: 'Horários de funcionamento',
     icon: LucideHourglass,
-  },
-  {
-    url: '/admin/available-slots',
-    name: 'Horários disponíveis',
-    icon: LucideClock,
   },
   {
     url: '/admin/available-dates',

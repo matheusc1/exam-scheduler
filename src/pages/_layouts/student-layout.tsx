@@ -1,5 +1,5 @@
 import { Header } from '@/pages/student/components/header'
-import { useAuth } from '@/context/authContext'
+import { useAuth } from '@/context/auth-context'
 import { useEffect } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
 

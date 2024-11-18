@@ -1,5 +1,4 @@
 import { Button } from '@/components/ui/button'
-import { DialogTrigger } from '@/components/ui/dialog'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,23 +6,22 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Separator } from '@/components/ui/separator'
+import { useModalContext, ModalAction } from '@/context/modal-context'
 import { LucideMoreHorizontal, LucideEdit2, LucideTrash2 } from 'lucide-react'
 
 interface DropdownMenuActionsProps {
-  setModalAction: (action: 'edit' | 'delete' | null) => void
-  setId: (id: string) => void
   itemId: string
   hasEdit: boolean
   hasDelete: boolean
 }
 
 export function DropdownMenuActions({
-  setModalAction,
-  setId,
   itemId,
   hasEdit,
   hasDelete,
 }: DropdownMenuActionsProps) {
+  const { setModalAction, setSelectedId, setIsModalOpen } = useModalContext()
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -34,34 +32,30 @@ export function DropdownMenuActions({
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         {hasEdit && (
-          <DialogTrigger
-            asChild
+          <DropdownMenuItem
             onClick={() => {
-              setModalAction('edit')
-              setId(itemId)
+              setModalAction(ModalAction.Edit)
+              setIsModalOpen(true)
+              setSelectedId(itemId)
             }}
           >
-            <DropdownMenuItem>
-              <LucideEdit2 className="size-4" />
-              <span>Editar</span>
-            </DropdownMenuItem>
-          </DialogTrigger>
+            <LucideEdit2 className="size-4" />
+            <span>Editar</span>
+          </DropdownMenuItem>
         )}
 
         <Separator className="my-1" />
         {hasDelete && (
-          <DialogTrigger
-            asChild
+          <DropdownMenuItem
             onClick={() => {
-              setModalAction('delete')
-              setId(itemId)
+              setModalAction(ModalAction.Delete)
+              setIsModalOpen(true)
+              setSelectedId(itemId)
             }}
           >
-            <DropdownMenuItem>
-              <LucideTrash2 className="size-4 text-red-500" />
-              <span className="text-red-500">Excluir</span>
-            </DropdownMenuItem>
-          </DialogTrigger>
+            <LucideTrash2 className="size-4 text-red-500" />
+            <span className="text-red-500">Excluir</span>
+          </DropdownMenuItem>
         )}
       </DropdownMenuContent>
     </DropdownMenu>

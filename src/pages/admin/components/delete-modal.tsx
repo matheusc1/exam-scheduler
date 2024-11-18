@@ -1,18 +1,17 @@
-import { Button } from '@/components/ui/button'
 import {
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
+import { ModalFooter } from './modal-footer'
 
 interface deleteModalProps {
-  onCancel: () => void
   onDelete: () => void
+  reset: () => void
 }
 
-export function DeleteModal({ onCancel, onDelete }: deleteModalProps) {
+export function DeleteModal({ onDelete, reset }: deleteModalProps) {
   return (
     <DialogContent className="w-96">
       <DialogHeader>
@@ -22,14 +21,7 @@ export function DeleteModal({ onCancel, onDelete }: deleteModalProps) {
           permanentemente este(s) registro(s) do servidor?
         </DialogDescription>
       </DialogHeader>
-      <DialogFooter>
-        <Button onClick={onCancel} variant="outline" type="button">
-          Cancelar
-        </Button>
-        <Button onClick={onDelete} type="submit">
-          Confirmar
-        </Button>
-      </DialogFooter>
+      <ModalFooter reset={reset} onConfirm={onDelete} />
     </DialogContent>
   )
 }

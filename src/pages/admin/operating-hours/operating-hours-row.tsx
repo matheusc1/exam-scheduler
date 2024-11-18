@@ -2,6 +2,7 @@ import { TableRow, TableCell } from '@/components/ui/table'
 import { DropdownMenuActions } from '../components/dropdown-menu'
 import dayjs from 'dayjs'
 import 'dayjs/locale/pt-br'
+import type { ModalAction } from '@/context/modal-context'
 dayjs.locale('pt-br')
 
 export interface OperatingHoursTableRowProps {
@@ -11,14 +12,11 @@ export interface OperatingHoursTableRowProps {
     openTime: string
     closeTime: string
   }
-  setModalAction: (action: 'edit' | 'delete' | 'add' | null) => void
-  setId: (id: string) => void
+  setModalAction: (action: ModalAction) => void
 }
 
-export function OperatingHoursTableRow({
+export function OperatingHoursRow({
   operatingHour,
-  setModalAction,
-  setId,
 }: OperatingHoursTableRowProps) {
   return (
     <TableRow key={operatingHour.id}>
@@ -32,13 +30,7 @@ export function OperatingHoursTableRow({
         {dayjs(`1970-01-01T${operatingHour.closeTime}`).format('HH:mm')}
       </TableCell>
       <TableCell className="font-medium">
-        <DropdownMenuActions
-          hasDelete
-          hasEdit
-          setModalAction={setModalAction}
-          setId={setId}
-          itemId={operatingHour.id}
-        />
+        <DropdownMenuActions hasDelete hasEdit itemId={operatingHour.id} />
       </TableCell>
     </TableRow>
   )

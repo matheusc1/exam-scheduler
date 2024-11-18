@@ -6,7 +6,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { Separator } from '@/components/ui/separator'
-import { useAuth } from '@/context/authContext'
+import { useAuth } from '@/context/auth-context'
 import { LucideLogOut, LucideMoon, LucideSettings } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
 

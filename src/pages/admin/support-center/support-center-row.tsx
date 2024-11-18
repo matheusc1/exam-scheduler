@@ -7,14 +7,10 @@ export interface SupportCenterTableRowProps {
     name: string
     numberOfComputers: number
   }
-  setModalAction: (action: 'edit' | 'delete' | 'add' | null) => void
-  setId: (id: string) => void
 }
 
 export function SupportCenterTableRow({
   supportCenter,
-  setModalAction,
-  setId,
 }: SupportCenterTableRowProps) {
   return (
     <TableRow key={supportCenter.id}>
@@ -23,13 +19,7 @@ export function SupportCenterTableRow({
         {supportCenter.numberOfComputers}
       </TableCell>
       <TableCell className="font-medium">
-        <DropdownMenuActions
-          hasDelete
-          hasEdit
-          setModalAction={setModalAction}
-          setId={setId}
-          itemId={supportCenter.id}
-        />
+        <DropdownMenuActions hasDelete hasEdit itemId={supportCenter.id} />
       </TableCell>
     </TableRow>
   )

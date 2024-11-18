@@ -1,6 +1,6 @@
 import { Outlet, useNavigate } from 'react-router-dom'
 import { CoordinationHeader } from '../coordination/header'
-import { useAuth } from '@/context/authContext'
+import { useAuth } from '@/context/auth-context'
 import { useEffect } from 'react'
 
 export function CoordinationLayout() {
