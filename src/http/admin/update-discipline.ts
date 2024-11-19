@@ -9,5 +9,5 @@ export async function updateDiscipline({
   disciplineId,
   name,
 }: UpdateDisciplineProps) {
-  await api.put(`/disciplines/${disciplineId}`, { name })
+  await api.put(`/discipline/${disciplineId}`, { name })
 }

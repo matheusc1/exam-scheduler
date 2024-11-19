@@ -15,7 +15,7 @@ import { OperatingHours } from '@/pages/admin/operating-hours'
 import { AdmSelectSupportCenter } from '@/pages/admin/components/select-support-center'
 import { AvailableDates } from '@/pages/admin/available-dates'
 import { Periods } from '@/pages/admin/periods'
-import { Disciplines } from '@/pages/admin/disciplines'
+import { Discipline } from '@/pages/admin/disciplines'
 
 export const router = createBrowserRouter([
   {
@@ -55,7 +55,7 @@ export const router = createBrowserRouter([
         element: <AvailableDates />,
       },
       { path: '/admin/periods', element: <Periods /> },
-      { path: '/admin/disciplines', element: <Disciplines /> },
+      { path: '/admin/disciplines', element: <Discipline /> },
       { path: '/admin/students' },
       { path: '/admin/enrollments' },
       { path: '/admin/schedules' },

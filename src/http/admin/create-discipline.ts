@@ -5,5 +5,5 @@ interface CreateDisciplineProps {
 }
 
 export async function createDiscipline({ name }: CreateDisciplineProps) {
-  await api.post('/disciplines', { name })
+  await api.post('/discipline', { name })
 }
