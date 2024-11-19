@@ -132,6 +132,7 @@ export function AvailableDates() {
     <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
       <div className="my-5 w-full space-y-5">
         <PageHeader
+          previousPath="available-dates"
           hasAdd
           hasDeleteAll
           title="Datas disponíveis"

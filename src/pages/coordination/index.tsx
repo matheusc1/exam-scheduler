@@ -12,7 +12,7 @@ import { formatScheduledDate } from '@/utils/format-scheduled-date'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 
-interface Schedule {
+export interface Schedule {
   id: string
   studentName: string
   disciplineName: string

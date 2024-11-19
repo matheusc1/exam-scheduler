@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 interface SupportCenterHeaderProps {
   previousPath?: string
   title: string
-  text: string
+  text?: string
   hasAdd?: boolean
   hasDeleteAll?: boolean
 }
