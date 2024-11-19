@@ -16,6 +16,7 @@ import { AdmSelectSupportCenter } from '@/pages/admin/components/select-support-
 import { AvailableDates } from '@/pages/admin/available-dates'
 import { Periods } from '@/pages/admin/periods'
 import { Disciplines } from '@/pages/admin/disciplines'
+import { Schedules } from '@/pages/admin/schedules'
 
 export const router = createBrowserRouter([
   {
@@ -58,7 +59,11 @@ export const router = createBrowserRouter([
       { path: '/admin/disciplines', element: <Disciplines /> },
       { path: '/admin/students' },
       { path: '/admin/enrollments' },
-      { path: '/admin/schedules' },
+      {
+        path: '/admin/schedules',
+        element: <AdmSelectSupportCenter path="schedules" />,
+      },
+      { path: '/admin/schedules/:supportCenterId', element: <Schedules /> },
     ],
   },
 
