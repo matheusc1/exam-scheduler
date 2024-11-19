@@ -14,9 +14,9 @@ export function CreateAndEditModal({ children }: CreateAndEditModalProps) {
   return (
     <DialogContent className="w-96">
       <DialogHeader>
-        <DialogTitle>Adicionar novo registro</DialogTitle>
+        <DialogTitle>Adicionar/Editar registro</DialogTitle>
         <DialogDescription>
-          Insira as informações para adicionar um novo registro
+          Insira as informações para adicionar ou editar um registro
         </DialogDescription>
       </DialogHeader>
       <div>{children}</div>

@@ -197,7 +197,7 @@ export function Students() {
               {modalAction === 'add' && (
                 <div className="space-y-1">
                   <Label>Dados do aluno</Label>
-                  <p className="text-sm text-zinc-500">Formato dos dados:</p>
+                  <p className="text-sm text-zinc-500">Envie os dados no seguinte formato pulando linhas:</p>
                   <p className="text-sm text-zinc-500">
                     RA, nome, email, data de nascimento (YYYY-MM-DD)
                   </p>
