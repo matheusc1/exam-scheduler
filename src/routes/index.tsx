@@ -18,6 +18,7 @@ import { Periods } from '@/pages/admin/periods'
 import { Disciplines } from '@/pages/admin/disciplines'
 import { Schedules } from '@/pages/admin/schedules'
 import { Students } from '@/pages/admin/students'
+import { Enrollments } from '@/pages/admin/enrollments'
 
 export const router = createBrowserRouter([
   {
@@ -59,7 +60,7 @@ export const router = createBrowserRouter([
       { path: '/admin/periods', element: <Periods /> },
       { path: '/admin/disciplines', element: <Disciplines /> },
       { path: '/admin/students', element: <Students /> },
-      { path: '/admin/enrollments' },
+      { path: '/admin/enrollments', element: <Enrollments /> },
       {
         path: '/admin/schedules',
         element: <AdmSelectSupportCenter path="schedules" />,

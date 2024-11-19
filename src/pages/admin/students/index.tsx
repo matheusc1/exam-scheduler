@@ -125,8 +125,6 @@ export function Students() {
           }
         })
 
-      console.log(studentsToAdd)
-
       await createStudents({ students: studentsToAdd })
 
       queryClient.invalidateQueries({ queryKey: ['get-students'] })
