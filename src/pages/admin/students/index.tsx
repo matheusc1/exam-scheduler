@@ -70,6 +70,7 @@ export function Students() {
     queryFn: getStudents,
     staleTime: Number.POSITIVE_INFINITY,
   })
+  
   const { data: supportCenters } = useQuery<SupportCenter[]>({
     queryKey: ['get-support-centers'],
     queryFn: getSupportCenters,

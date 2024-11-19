@@ -25,13 +25,13 @@ import { useModalContext } from '@/context/modal-context'
 import { triggerToast } from '@/utils/trigger-toast'
 import { ModalFooter } from '../components/modal-footer'
 
-interface Discipline {
+export interface Discipline {
   id: string
   name: string
 }
 
 const addDisciplineForm = z.object({
-  name: z.string()
+  name: z.string(),
 })
 
 type AddDisciplineForm = z.infer<typeof addDisciplineForm>
@@ -46,7 +46,7 @@ export function Disciplines() {
   } = useModalContext()
   const { success, error } = triggerToast()
 
-  const { data: discipline } = useQuery<Discipline[]>({
+  const { data: disciplines } = useQuery<Discipline[]>({
     queryKey: ['get-disciplines'],
     queryFn: getDisciplines,
     staleTime: Number.POSITIVE_INFINITY,
@@ -76,7 +76,7 @@ export function Disciplines() {
   async function handleCreateDiscipline(data: AddDisciplineForm) {
     try {
       await createDiscipline({
-        name: data.name
+        name: data.name,
       })
       queryClient.invalidateQueries({ queryKey: ['get-disciplines'] })
       success('Disciplina registrada com sucesso!')
@@ -92,7 +92,7 @@ export function Disciplines() {
 
       await updateDiscipline({
         disciplineId: selectedId,
-        name: data.name
+        name: data.name,
       })
       queryClient.invalidateQueries({ queryKey: ['get-disciplines'] })
       success('Disciplina atualizada com sucesso!')
@@ -111,7 +111,9 @@ export function Disciplines() {
 
         <Table>
           <TableCaption>
-            {!discipline?.length ? 'Nenhuma disciplina cadastrada!' : 'Disciplinas'}
+            {!disciplines?.length
+              ? 'Nenhuma disciplina cadastrada!'
+              : 'Disciplinas'}
           </TableCaption>
           <TableHeader>
             <TableRow>
@@ -120,7 +122,7 @@ export function Disciplines() {
           </TableHeader>
 
           <TableBody>
-            {discipline?.map(discipline => (
+            {disciplines?.map(discipline => (
               <DisciplinesTableRow
                 key={discipline.id}
                 discipline={discipline}
@@ -161,4 +163,3 @@ export function Disciplines() {
     </Dialog>
   )
 }
-
