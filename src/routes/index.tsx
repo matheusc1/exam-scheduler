@@ -17,6 +17,7 @@ import { AvailableDates } from '@/pages/admin/available-dates'
 import { Periods } from '@/pages/admin/periods'
 import { Disciplines } from '@/pages/admin/disciplines'
 import { Schedules } from '@/pages/admin/schedules'
+import { Students } from '@/pages/admin/students'
 
 export const router = createBrowserRouter([
   {
@@ -57,7 +58,7 @@ export const router = createBrowserRouter([
       },
       { path: '/admin/periods', element: <Periods /> },
       { path: '/admin/disciplines', element: <Disciplines /> },
-      { path: '/admin/students' },
+      { path: '/admin/students', element: <Students /> },
       { path: '/admin/enrollments' },
       {
         path: '/admin/schedules',
