@@ -36,7 +36,7 @@ const addDisciplineForm = z.object({
 
 type AddDisciplineForm = z.infer<typeof addDisciplineForm>
 
-export function Discipline() {
+export function Disciplines() {
   const {
     isModalOpen,
     modalAction,
