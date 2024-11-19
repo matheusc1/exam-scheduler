@@ -1,7 +1,7 @@
 import { ScheduleCard } from './schedule-card'
 import { useAuth } from '@/context/auth-context'
 import { useQuery } from '@tanstack/react-query'
-import { getEnrollments } from '@/http/student/get-enrollments'
+import { getEnrollmentsByRa } from '@/http/student/get-enrollments-by-ra'
 import { getScheduledExams } from '@/http/student/get-scheduled-exams'
 
 interface Exam {
@@ -31,7 +31,7 @@ export function Schedule() {
 
   const { data: enrollmentData } = useQuery<Enrollment[]>({
     queryKey: ['get-enrollments'],
-    queryFn: () => getEnrollments({ studentRa: student?.ra! }),
+    queryFn: () => getEnrollmentsByRa({ studentRa: student?.ra! }),
     enabled: !!student?.ra,
     staleTime: Number.POSITIVE_INFINITY,
   })
