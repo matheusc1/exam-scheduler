@@ -107,7 +107,7 @@ export function Disciplines() {
   return (
     <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
       <div className="my-5 w-full space-y-5">
-        <PageHeader hasAdd title="Disciplina" text="Adicionar disciplina" />
+        <PageHeader hasAdd title="Disciplinas" text="Adicionar disciplina" />
 
         <Table>
           <TableCaption>
