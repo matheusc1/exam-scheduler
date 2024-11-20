@@ -65,7 +65,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     queryKey: ['get-student'],
     queryFn: () => getStudent({ userId }),
     enabled: !!userId && role === 'student',
-    staleTime: Number.POSITIVE_INFINITY,
     retry: 3,
   })
 

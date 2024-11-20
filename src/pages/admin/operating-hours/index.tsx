@@ -237,7 +237,7 @@ export function OperatingHours() {
             </div>
 
             <div className="space-y-1">
-              <Label>Número de computadores</Label>
+              <Label>Horário de fechamento</Label>
               <Input
                 className="w-full"
                 type="text"

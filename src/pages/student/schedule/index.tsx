@@ -30,17 +30,15 @@ export function Schedule() {
   const { student } = useAuth()
 
   const { data: enrollmentData } = useQuery<Enrollment[]>({
-    queryKey: ['get-enrollments'],
+    queryKey: ['get-enrollments', student?.ra],
     queryFn: () => getEnrollmentsByRa({ studentRa: student?.ra! }),
     enabled: !!student?.ra,
-    staleTime: Number.POSITIVE_INFINITY,
   })
 
   const { data: examsScheduled } = useQuery<ExamScheduled[]>({
-    queryKey: ['get-scheduled-exams'],
+    queryKey: ['get-scheduled-exams', student?.ra],
     queryFn: () => getScheduledExams({ studentRa: student?.ra! }),
     enabled: !!student?.ra,
-    staleTime: Number.POSITIVE_INFINITY,
   })
 
   const exams: Exam[] = enrollmentData?.length

@@ -141,9 +141,7 @@ export function AvailableDates() {
 
         <Table>
           <TableCaption>
-            {availableDates?.length
-              ? 'Nenhuma data cadastrada!'
-              : 'Datas disponíveis'}
+            Datas disponíveis
           </TableCaption>
           <TableHeader>
             <TableRow>
