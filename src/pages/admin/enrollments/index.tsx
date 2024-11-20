@@ -123,7 +123,7 @@ export function Enrollments() {
       success('Matrículas registradas com sucesso!')
       reset()
     } catch (err) {
-      error('registrar')
+      error('criar')
     }
   }
 
