@@ -10,7 +10,8 @@ import {
 import { getSchedules } from '@/http/coordination/get-schedules'
 import { formatScheduledDate } from '@/utils/format-scheduled-date'
 import { useQuery } from '@tanstack/react-query'
-import { useParams } from 'react-router-dom'
+import { LucideChevronLeft } from 'lucide-react'
+import { Link, useParams } from 'react-router-dom'
 
 export interface Schedule {
   id: string
@@ -37,7 +38,12 @@ export function CoordinationPage() {
 
   return (
     <div className="my-5 w-full space-y-5">
-      <h2 className="font-semibold text-lg">Avaliações agendadas</h2>
+      <div className="flex items-center gap-2">
+        <Link to={'/coordination/select'}>
+          <LucideChevronLeft className="size-4 hover:opacity-50" />
+        </Link>
+        <h2 className="font-semibold text-lg">Avaliações agendadas</h2>
+      </div>
 
       <Table>
         <TableCaption>

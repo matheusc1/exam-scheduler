@@ -66,7 +66,7 @@ export function ScheduleCard({
   const { date } = watch()
 
   const { data: availableDates } = useQuery<Date[]>({
-    queryKey: ['get-available-dates'],
+    queryKey: ['get-available-dates', student?.supportCenter.id],
     queryFn: async () => {
       const availableDates = await getAvailableDates({
         supportCenterId: student?.supportCenter.id!,
@@ -78,7 +78,7 @@ export function ScheduleCard({
   })
 
   const { data: slots } = useQuery<Slot[]>({
-    queryKey: ['get-slots'],
+    queryKey: ['get-slots', student?.supportCenter.id, date],
     queryFn: () =>
       getSlots({
         supportCenterId: student?.supportCenter.id!,

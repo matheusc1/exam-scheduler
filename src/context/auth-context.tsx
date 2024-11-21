@@ -62,7 +62,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, [])
 
   const { data: student, error } = useQuery<StudentType>({
-    queryKey: ['get-student'],
+    queryKey: ['get-student', userId],
     queryFn: () => getStudent({ userId }),
     enabled: !!userId && role === 'student',
     retry: 3,
