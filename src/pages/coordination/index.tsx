@@ -26,12 +26,7 @@ export function CoordinationPage() {
 
   const { data: schedules } = useQuery<Schedule[]>({
     queryKey: ['get-schedules', supportCenterId],
-    queryFn: () => {
-      if (supportCenterId) {
-        return getSchedules({ supportCenterId })
-      }
-      return []
-    },
+    queryFn: () => getSchedules({ supportCenterId: supportCenterId! }),
     enabled: !!supportCenterId,
     staleTime: 10 * (60 * 1000), // 10 min
   })
