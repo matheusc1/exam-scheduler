@@ -70,7 +70,7 @@ export function Students() {
     queryFn: getStudents,
     staleTime: Number.POSITIVE_INFINITY,
   })
-  
+
   const { data: supportCenters } = useQuery<SupportCenter[]>({
     queryKey: ['get-support-centers'],
     queryFn: getSupportCenters,
@@ -196,7 +196,9 @@ export function Students() {
               {modalAction === 'add' && (
                 <div className="space-y-1">
                   <Label>Dados do aluno</Label>
-                  <p className="text-sm text-zinc-500">Envie os dados no seguinte formato pulando linhas:</p>
+                  <p className="text-sm text-zinc-500">
+                    Envie os dados no seguinte formato pulando linhas:
+                  </p>
                   <p className="text-sm text-zinc-500">
                     RA, nome, email, data de nascimento (YYYY-MM-DD)
                   </p>
@@ -238,24 +240,30 @@ export function Students() {
                   name="supportCenterId"
                   control={control}
                   render={({ field }) => (
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Selecione o polo" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          <SelectLabel>Polos</SelectLabel>
-                          {supportCenters?.map(supportCenter => (
-                            <SelectItem
-                              key={supportCenter.id}
-                              value={supportCenter.id}
-                            >
-                              {supportCenter.name}
-                            </SelectItem>
-                          ))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
+                    <div className="space-y-1">
+                      <Label>Polo</Label>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Selecione o polo" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectLabel>Polos</SelectLabel>
+                            {supportCenters?.map(supportCenter => (
+                              <SelectItem
+                                key={supportCenter.id}
+                                value={supportCenter.id}
+                              >
+                                {supportCenter.name}
+                              </SelectItem>
+                            ))}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    </div>
                   )}
                 />
               </div>

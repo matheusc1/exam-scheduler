@@ -195,7 +195,7 @@ export function OperatingHours() {
                 name="weekDays"
                 control={control}
                 render={({ field }) => (
-                  <>
+                  <div className="space-y-1">
                     <Label>Dia(s) da semana</Label>
                     <MultiSelector
                       onValuesChange={field.onChange}
@@ -220,7 +220,7 @@ export function OperatingHours() {
                         </MultiSelectorList>
                       </MultiSelectorContent>
                     </MultiSelector>
-                  </>
+                  </div>
                 )}
               />
             </div>

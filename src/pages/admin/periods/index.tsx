@@ -26,6 +26,7 @@ import { CreateAndEditModal } from '../components/create-and-edit-modal'
 import { Calendar } from '@/components/ui/calendar'
 import { ModalFooter } from '../components/modal-footer'
 import { updatePeriod } from '@/http/admin/update-period'
+import { Label } from '@/components/ui/label'
 
 export interface Period {
   id: string
@@ -152,11 +153,14 @@ export function Periods() {
                 modalAction === 'add' ? handleCreatePeriod : handleEditPeriod
               )}
             >
-              <Calendar
-                mode="range"
-                selected={startAndEndDates}
-                onSelect={e => setStartAndEndDates(e)}
-              />
+              <div className="space-y-1">
+                <Label>Selecione a data de início e fim</Label>
+                <Calendar
+                  mode="range"
+                  selected={startAndEndDates}
+                  onSelect={e => setStartAndEndDates(e)}
+                />
+              </div>
               <ModalFooter reset={handleReset} isSubmitting={isSubmitting} />
             </form>
           </CreateAndEditModal>
