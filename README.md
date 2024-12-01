@@ -54,3 +54,6 @@ npm run dev
 - Gerenciamento de polos, horários de funcionamento, datas e horários disponíveis
 - Gerenciamento de períodos, disciplinas, alunos, matrículas
 - Visualização de agendamentos
+
+## License 🧾
+Este projeto está licenciado sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
