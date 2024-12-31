@@ -139,51 +139,55 @@ export function AvailableDates() {
           text="Adicionar datas"
         />
 
-        <Table>
-          <TableCaption>
-            Datas disponíveis
-          </TableCaption>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Data</TableHead>
-            </TableRow>
-          </TableHeader>
-
-          <TableBody>
-            {availableDates?.map((availableDate, i) => (
-              // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-              <TableRow key={i}>
-                <TableCell className="font-medium">
-                  {dayjs(availableDate).format('DD/MM/YYYY')}
-                </TableCell>
-                <TableCell className="font-medium text-right">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" className="h-8 w-8 p-0">
-                        <span className="sr-only">Open menu</span>
-                        <LucideMoreHorizontal className="size-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                      <DialogTrigger
-                        asChild
-                        onClick={() => {
-                          setModalAction(ModalAction.Delete)
-                          setSelectedDate(availableDate)
-                        }}
-                      >
-                        <DropdownMenuItem>
-                          <LucideTrash2 className="size-4 text-red-500" />
-                          <span className="text-red-500">Excluir</span>
-                        </DropdownMenuItem>
-                      </DialogTrigger>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </TableCell>
+        {!availableDates?.length ? (
+          <div className="text-center font-medium">
+            Nenhuma data disponível!
+          </div>
+        ) : (
+          <Table>
+            <TableCaption>Datas disponíveis</TableCaption>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Data</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+
+            <TableBody>
+              {availableDates?.map((availableDate, i) => (
+                // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                <TableRow key={i}>
+                  <TableCell className="font-medium">
+                    {dayjs(availableDate).format('DD/MM/YYYY')}
+                  </TableCell>
+                  <TableCell className="font-medium text-right">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" className="h-8 w-8 p-0">
+                          <span className="sr-only">Open menu</span>
+                          <LucideMoreHorizontal className="size-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent>
+                        <DialogTrigger
+                          asChild
+                          onClick={() => {
+                            setModalAction(ModalAction.Delete)
+                            setSelectedDate(availableDate)
+                          }}
+                        >
+                          <DropdownMenuItem>
+                            <LucideTrash2 className="size-4 text-red-500" />
+                            <span className="text-red-500">Excluir</span>
+                          </DropdownMenuItem>
+                        </DialogTrigger>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        )}
       </div>
 
       {(modalAction === 'delete' || modalAction === 'deleteAll') && (

@@ -113,26 +113,30 @@ export function SupportCenter() {
       <div className="my-5 w-full space-y-5">
         <PageHeader hasAdd title="Polos" text="Adicionar polo" />
 
-        <Table>
-          <TableCaption>
-            {!supportCenters?.length ? 'Nenhum polo cadastrado!' : 'Polos'}
-          </TableCaption>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Nome</TableHead>
-              <TableHead>Número de computadores</TableHead>
-            </TableRow>
-          </TableHeader>
+        {!supportCenters?.length ? (
+          <div className="text-center font-medium">
+            Nenhuma polo cadastrado!
+          </div>
+        ) : (
+          <Table>
+            <TableCaption>Polos</TableCaption>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Nome</TableHead>
+                <TableHead>Número de computadores</TableHead>
+              </TableRow>
+            </TableHeader>
 
-          <TableBody>
-            {supportCenters?.map(supportCenter => (
-              <SupportCenterTableRow
-                key={supportCenter.id}
-                supportCenter={supportCenter}
-              />
-            ))}
-          </TableBody>
-        </Table>
+            <TableBody>
+              {supportCenters?.map(supportCenter => (
+                <SupportCenterTableRow
+                  key={supportCenter.id}
+                  supportCenter={supportCenter}
+                />
+              ))}
+            </TableBody>
+          </Table>
+        )}
       </div>
 
       {modalAction === 'delete' && (

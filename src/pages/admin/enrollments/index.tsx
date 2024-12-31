@@ -148,30 +148,32 @@ export function Enrollments() {
       <div className="my-5 w-full space-y-5">
         <PageHeader hasAdd title="Matrículas" text="Adicionar matrículas" />
 
-        <Table>
-          <TableCaption>
-            {!enrollments?.length
-              ? 'Nenhum matrícula cadastrada'
-              : 'Matrículas'}
-          </TableCaption>
-          <TableHeader>
-            <TableRow>
-              <TableHead>RA</TableHead>
-              <TableHead>Nome</TableHead>
-              <TableHead>Disciplina</TableHead>
-              <TableHead>Data de inicio</TableHead>
-              <TableHead>Data de término</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {enrollments?.map(enrollment => (
-              <EnrollmentsTableRow
-                key={enrollment.id}
-                enrollment={enrollment}
-              />
-            ))}
-          </TableBody>
-        </Table>
+        {!enrollments?.length ? (
+          <div className="text-center font-medium">
+            Nenhum matrícula cadastrada!
+          </div>
+        ) : (
+          <Table>
+            <TableCaption>Matrículas</TableCaption>
+            <TableHeader>
+              <TableRow>
+                <TableHead>RA</TableHead>
+                <TableHead>Nome</TableHead>
+                <TableHead>Disciplina</TableHead>
+                <TableHead>Data de inicio</TableHead>
+                <TableHead>Data de término</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {enrollments?.map(enrollment => (
+                <EnrollmentsTableRow
+                  key={enrollment.id}
+                  enrollment={enrollment}
+                />
+              ))}
+            </TableBody>
+          </Table>
+        )}
 
         {modalAction === 'delete' && (
           <DeleteModal reset={reset} onDelete={handleDelete} />

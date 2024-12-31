@@ -109,27 +109,29 @@ export function Disciplines() {
       <div className="my-5 w-full space-y-5">
         <PageHeader hasAdd title="Disciplinas" text="Adicionar disciplina" />
 
-        <Table>
-          <TableCaption>
-            {!disciplines?.length
-              ? 'Nenhuma disciplina cadastrada!'
-              : 'Disciplinas'}
-          </TableCaption>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Nome</TableHead>
-            </TableRow>
-          </TableHeader>
+        {!disciplines?.length ? (
+          <div className="text-center font-medium">
+            Nenhuma disciplina cadastrada!
+          </div>
+        ) : (
+          <Table>
+            <TableCaption>Disciplinas</TableCaption>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Nome</TableHead>
+              </TableRow>
+            </TableHeader>
 
-          <TableBody>
-            {disciplines?.map(discipline => (
-              <DisciplinesTableRow
-                key={discipline.id}
-                discipline={discipline}
-              />
-            ))}
-          </TableBody>
-        </Table>
+            <TableBody>
+              {disciplines?.map(discipline => (
+                <DisciplinesTableRow
+                  key={discipline.id}
+                  discipline={discipline}
+                />
+              ))}
+            </TableBody>
+          </Table>
+        )}
       </div>
 
       {modalAction === 'delete' && (

@@ -114,32 +114,36 @@ export function Periods() {
       <div className="my-5 w-full space-y-5">
         <PageHeader hasAdd title="Períodos" text="Adicionar período" />
 
-        <Table>
-          <TableCaption>
-            {!periods?.length ? 'Nenhum período cadastrado' : 'Períodos'}
-          </TableCaption>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Data de início</TableHead>
-              <TableHead>Data de término</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {periods?.map(period => (
-              <TableRow key={period.id}>
-                <TableCell className="font-medium">
-                  {dayjs(period.startDate).format('DD/MM/YYYY')}
-                </TableCell>
-                <TableCell className="font-medium">
-                  {dayjs(period.endDate).format('DD/MM/YYYY')}
-                </TableCell>
-                <TableCell>
-                  <DropdownMenuActions hasDelete hasEdit itemId={period.id} />
-                </TableCell>
+        {!periods?.length ? (
+          <div className="text-center font-medium">
+            Nenhum período cadastrado!
+          </div>
+        ) : (
+          <Table>
+            <TableCaption>Períodos</TableCaption>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Data de início</TableHead>
+                <TableHead>Data de término</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {periods?.map(period => (
+                <TableRow key={period.id}>
+                  <TableCell className="font-medium">
+                    {dayjs(period.startDate).format('DD/MM/YYYY')}
+                  </TableCell>
+                  <TableCell className="font-medium">
+                    {dayjs(period.endDate).format('DD/MM/YYYY')}
+                  </TableCell>
+                  <TableCell>
+                    <DropdownMenuActions hasDelete hasEdit itemId={period.id} />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        )}
 
         {modalAction === 'delete' && (
           <DeleteModal reset={reset} onDelete={handleDelete} />

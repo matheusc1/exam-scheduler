@@ -28,38 +28,42 @@ export function Schedules() {
     <div className="my-5 w-full space-y-5">
       <PageHeader title="Avaliações agendadas" previousPath="schedules" />
 
-      <Table>
-        <TableCaption>
-          {!schedules?.length ? 'Nenhuma avaliação agendada!' : 'Agendamentos'}
-        </TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Aluno</TableHead>
-            <TableHead>Disciplina</TableHead>
-            <TableHead>Data</TableHead>
-            <TableHead className="text-right">Tipo</TableHead>
-          </TableRow>
-        </TableHeader>
-
-        <TableBody>
-          {schedules?.map(schedule => (
-            <TableRow key={schedule.id}>
-              <TableCell className="font-medium w-72">
-                {schedule.studentName}
-              </TableCell>
-              <TableCell className="font-medium">
-                {schedule.disciplineName}
-              </TableCell>
-              <TableCell className="font-medium">
-                {formatScheduledDate(schedule.scheduledDate)}
-              </TableCell>
-              <TableCell className="font-medium text-right">
-                {schedule.type}
-              </TableCell>
+      {!schedules?.length ? (
+        <div className="text-center font-medium">
+          Nenhuma avaliação agendada!
+        </div>
+      ) : (
+        <Table>
+          <TableCaption>Agendamentos</TableCaption>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Aluno</TableHead>
+              <TableHead>Disciplina</TableHead>
+              <TableHead>Data</TableHead>
+              <TableHead className="text-right">Tipo</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+
+          <TableBody>
+            {schedules?.map(schedule => (
+              <TableRow key={schedule.id}>
+                <TableCell className="font-medium w-72">
+                  {schedule.studentName}
+                </TableCell>
+                <TableCell className="font-medium">
+                  {schedule.disciplineName}
+                </TableCell>
+                <TableCell className="font-medium">
+                  {formatScheduledDate(schedule.scheduledDate)}
+                </TableCell>
+                <TableCell className="font-medium text-right">
+                  {schedule.type}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      )}
     </div>
   )
 }

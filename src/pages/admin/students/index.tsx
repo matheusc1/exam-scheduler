@@ -160,26 +160,29 @@ export function Students() {
     <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
       <div className="my-5 w-full space-y-5">
         <PageHeader hasAdd title="Estudantes" text="Adicionar estudantes" />
-
-        <Table>
-          <TableCaption>
-            {!students?.length ? 'Nenhum estudante registrado' : 'Estudantes'}
-          </TableCaption>
-          <TableHeader>
-            <TableRow>
-              <TableHead>RA</TableHead>
-              <TableHead>Nome</TableHead>
-              <TableHead>E-mail</TableHead>
-              <TableHead>Data de nascimento</TableHead>
-              <TableHead>Polo</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {students?.map(student => (
-              <StudentTableRow key={student.id} student={student} />
-            ))}
-          </TableBody>
-        </Table>
+        {!students?.length ? (
+          <div className="text-center font-medium">
+            Nenhum estudante registrado!
+          </div>
+        ) : (
+          <Table>
+            <TableCaption>Estudantes</TableCaption>
+            <TableHeader>
+              <TableRow>
+                <TableHead>RA</TableHead>
+                <TableHead>Nome</TableHead>
+                <TableHead>E-mail</TableHead>
+                <TableHead>Data de nascimento</TableHead>
+                <TableHead>Polo</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {students?.map(student => (
+                <StudentTableRow key={student.id} student={student} />
+              ))}
+            </TableBody>
+          </Table>
+        )}
 
         {modalAction === 'delete' && (
           <DeleteModal reset={reset} onDelete={handleDelete} />

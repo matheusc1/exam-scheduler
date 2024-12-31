@@ -150,30 +150,32 @@ export function OperatingHours() {
           text="Adicionar horário de funcionamento"
         />
 
-        <Table>
-          <TableCaption>
-            {operatingHours?.length
-              ? 'Nenhum horário cadastado!'
-              : 'Horários de funcionamento'}
-          </TableCaption>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Dia da semana</TableHead>
-              <TableHead>Horário de abertura</TableHead>
-              <TableHead>Horário de fechamento</TableHead>
-            </TableRow>
-          </TableHeader>
+        {!operatingHours?.length ? (
+          <div className="text-center font-medium">
+            Nenhum horário cadastrado!
+          </div>
+        ) : (
+          <Table>
+            <TableCaption>Horários de funcionamento</TableCaption>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Dia da semana</TableHead>
+                <TableHead>Horário de abertura</TableHead>
+                <TableHead>Horário de fechamento</TableHead>
+              </TableRow>
+            </TableHeader>
 
-          <TableBody>
-            {operatingHours?.map(operatingHour => (
-              <OperatingHoursRow
-                key={operatingHour.id}
-                operatingHour={operatingHour}
-                setModalAction={setModalAction}
-              />
-            ))}
-          </TableBody>
-        </Table>
+            <TableBody>
+              {operatingHours?.map(operatingHour => (
+                <OperatingHoursRow
+                  key={operatingHour.id}
+                  operatingHour={operatingHour}
+                  setModalAction={setModalAction}
+                />
+              ))}
+            </TableBody>
+          </Table>
+        )}
       </div>
 
       {modalAction === 'delete' && (
