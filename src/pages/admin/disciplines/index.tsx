@@ -65,7 +65,7 @@ export function Disciplines() {
         await deleteDiscipline({ disciplineId: selectedId })
         queryClient.invalidateQueries({ queryKey: ['get-disciplines'] })
       }
-      success('Registro excluido com sucesso!')
+      success('Registro excluído com sucesso!')
     } catch (err) {
       error('deletar')
     } finally {

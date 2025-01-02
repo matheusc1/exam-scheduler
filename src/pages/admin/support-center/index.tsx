@@ -15,7 +15,7 @@ import { queryClient } from '@/lib/react-query'
 import { CreateAndEditModal } from '../components/create-and-edit-modal'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
-import { createSupportCenter } from '@/http/admin/create-suppor-center'
+import { createSupportCenter } from '@/http/admin/create-support-center'
 import { updateSupportCenter } from '@/http/admin/update-support-center'
 import { SupportCenterTableRow } from './support-center-row'
 import { PageHeader } from '../components/page-header'
@@ -67,7 +67,7 @@ export function SupportCenter() {
         await deleteSupportCenter({ id: selectedId })
         queryClient.invalidateQueries({ queryKey: ['get-support-centers'] })
       }
-      success('Registro excluido com sucesso!')
+      success('Registro excluído com sucesso!')
     } catch (err) {
       error('deletar')
     } finally {

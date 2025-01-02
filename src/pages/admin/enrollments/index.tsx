@@ -98,7 +98,7 @@ export function Enrollments() {
 
       await deleteEnrollment({ enrollmentId: selectedId })
       queryClient.invalidateQueries({ queryKey: ['get-enrollments'] })
-      success('Registro excluido com sucesso!')
+      success('Registro excluído com sucesso!')
     } catch (err) {
       error('excluir')
     } finally {

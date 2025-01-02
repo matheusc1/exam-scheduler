@@ -92,7 +92,7 @@ export function OperatingHours() {
         })
         queryClient.invalidateQueries({ queryKey: ['get-operating-hours'] })
       }
-      success('Registro excluido com sucesso!')
+      success('Registro excluído com sucesso!')
     } catch (err) {
       error('deletar')
     } finally {
@@ -232,7 +232,7 @@ export function OperatingHours() {
               <Input
                 className="w-full"
                 type="text"
-                placeholder="Informe o horário de abetura. Ex: 10:00"
+                placeholder="Informe o horário de abertura. Ex: 10:00"
                 {...register('openTime')}
                 required
               />

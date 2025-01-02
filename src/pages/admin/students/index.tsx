@@ -92,7 +92,7 @@ export function Students() {
       await deleteStudent({ studentRa: selectedId })
       queryClient.invalidateQueries({ queryKey: ['get-students'] })
 
-      success('Registro excluido com sucesso!')
+      success('Registro excluído com sucesso!')
     } catch (err) {
       error('excluir')
     } finally {

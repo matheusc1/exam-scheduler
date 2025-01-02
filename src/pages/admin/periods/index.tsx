@@ -63,7 +63,7 @@ export function Periods() {
 
       await deletePeriod({ periodId: selectedId })
       queryClient.invalidateQueries({ queryKey: ['get-periods'] })
-      success('Registro excluido com sucesso!')
+      success('Registro excluído com sucesso!')
     } catch (err) {
       error('deletar')
     } finally {
