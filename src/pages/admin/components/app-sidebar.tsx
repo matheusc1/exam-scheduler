@@ -3,6 +3,7 @@ import { NavHeader } from './nav-header'
 import { NavMain } from './nav-main'
 import {
   LucideBuilding,
+  LucideCalendarCheck,
   LucideCalendarClock,
   LucideCalendarDays,
   LucideCalendarRange,
@@ -30,6 +31,11 @@ const routes = [
   { url: '/admin/students', name: 'Alunos', icon: LucideUser },
   { url: '/admin/enrollments', name: 'Matrículas', icon: LucideGraduationCap },
   { url: '/admin/schedules', name: 'Agendamentos', icon: LucideCalendarDays },
+  {
+    url: '/admin/past-schedules',
+    name: 'Avaliações passadas',
+    icon: LucideCalendarCheck,
+  },
 ]
 
 export function AppSidebar() {

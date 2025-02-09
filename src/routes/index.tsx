@@ -19,6 +19,7 @@ import { Disciplines } from '@/pages/admin/disciplines'
 import { Schedules } from '@/pages/admin/schedules'
 import { Students } from '@/pages/admin/students'
 import { Enrollments } from '@/pages/admin/enrollments'
+import { PastSchedules } from '@/pages/admin/past-schedules'
 
 export const router = createBrowserRouter([
   {
@@ -66,6 +67,14 @@ export const router = createBrowserRouter([
         element: <AdmSelectSupportCenter path="schedules" />,
       },
       { path: '/admin/schedules/:supportCenterId', element: <Schedules /> },
+      {
+        path: '/admin/past-schedules',
+        element: <AdmSelectSupportCenter path="past-schedules" />,
+      },
+      {
+        path: '/admin/past-schedules/:supportCenterId',
+        element: <PastSchedules />,
+      },
     ],
   },
 
